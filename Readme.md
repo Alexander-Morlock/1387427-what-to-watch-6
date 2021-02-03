@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть» [![Build status][travis-image]][travis-url]
 
 * Студент: [Alexander Kravtcov](https://up.htmlacademy.ru/react/6/user/1387427).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Сергеев](https://htmlacademy.ru/profile/id1205257).
 
 ---
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MovieCard from '../MovieCard/MovieCard';
+import shapeOfFilm from '../../utils/shape-of-film';
+import MovieList from '../MovieList/MovieList';
 
 const MainPage = (props) => {
   return (
@@ -89,11 +90,7 @@ const MainPage = (props) => {
             </li>
           </ul>
 
-          <div className="catalog__movies-list">
-            {
-              props.data.map((movie, i) => <MovieCard movie={movie} key={movie.title + i}/>)
-            }
-          </div>
+          <MovieList films={props.films}/>
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
@@ -116,14 +113,8 @@ const MainPage = (props) => {
   );
 };
 
-MainPage.propTypes = {
-  data: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        imgPath: PropTypes.string.isRequired,
-        hrefPath: PropTypes.string.isRequired
-      })
-  ).isRequired
-};
+MainPage.propTypes = PropTypes.arrayOf(
+    shapeOfFilm()
+).isRequired;
 
 export default MainPage;

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import shapeOfFilm from '../../utils/shape-of-film';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import MainPage from '../MainPage/MainPage';
 import SignIn from '../SignIn/SignIn';
 import MyList from '../MyList/MyList';
 import Film from '../Film/Film';
 import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Page404 from '../Page404/Page404';
 import MoreLikeThis from '../Film/MoreLikeThis';
 
@@ -15,7 +16,7 @@ const App = (props) => {
     <BrowserRouter>
       <Switch>
         <Route path='/' exact>
-          <MainPage data={props.data} />
+          <MainPage films={props.films} />
         </Route>
 
         <Route path='/login' exact>
@@ -23,22 +24,21 @@ const App = (props) => {
         </Route>
 
         <Route path='/mylist' exact>
-          <MyList />
+          <MyList films={props.films} />
         </Route>
 
         <Route path='/films/:id' exact>
-          <Film />
+          <Film films={props.films} />
           <MoreLikeThis />
         </Route>
 
         <Route path='/films/:id/review' exact>
-          <AddReview />
+          <AddReview films={props.films} />
         </Route>
 
-        <Route path='/player/:id' exact>
-          <Player />
+        <Route path='/player/:id' exact >
+          <Player films={props.films} />
         </Route>
-
         <Route>
           <Page404 />
         </Route>
@@ -47,14 +47,9 @@ const App = (props) => {
   );
 };
 
-App.propTypes = {
-  data: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        imgPath: PropTypes.string.isRequired,
-        hrefPath: PropTypes.string.isRequired
-      })
-  ).isRequired
-};
+App.propTypes = PropTypes.arrayOf(
+    shapeOfFilm()
+).isRequired;
+
 
 export default App;

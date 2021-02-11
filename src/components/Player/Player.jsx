@@ -1,6 +1,13 @@
 import React from 'react';
+import {useParams} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import shapeOfFilm from '../../utils/shape-of-film';
 
-const Player = () => {
+const Player = (props) => {
+  const {id} = useParams();
+  const movie = props.films.find((film) => film.id === +id);
+  const movieTitle = movie.name;
+
   return (
     <div className="player">
       <video src="#" className="player__video" poster="img/player-poster.jpg" />
@@ -20,7 +27,7 @@ const Player = () => {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{movieTitle}</div>
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width={27} height={27}>
               <use xlinkHref="#full-screen" />
@@ -32,5 +39,9 @@ const Player = () => {
     </div>
   );
 };
+
+Player.propTypes = PropTypes.arrayOf(
+    shapeOfFilm()
+).isRequired;
 
 export default Player;

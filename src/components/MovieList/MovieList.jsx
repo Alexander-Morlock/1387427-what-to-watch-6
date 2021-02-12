@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import MovieCard from '../MovieCard/MovieCard';
 
 const MovieList = (props) => {
-  const [state, setState] = useState(0);
+  const [activeFilmState, setActiveFilmState] = useState(0);
   const handleOnMouseOver = (evt) => {
-    setState(evt.target.dataset.id);
+    setActiveFilmState(evt.target.dataset.id);
   };
 
   return (
-    <div className="catalog__movies-list" data-active={state}>
+    <div className="catalog__movies-list" data-active={activeFilmState}>
       {
         props.films.map((movie) => {
           return <MovieCard

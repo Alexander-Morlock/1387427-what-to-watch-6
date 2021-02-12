@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
 const form = () => {
-  const [state, setState] = useState(``);
-  const handleTextareaChange = (evt) => setState(evt.target.value);
+  const [reviewText, setReviewText] = useState(``);
+  const handleTextareaChange = (evt) => setReviewText(evt.target.value);
 
   return (
     <form action="#" className="add-review__form">
@@ -35,7 +35,7 @@ const form = () => {
           name="review-text"
           id="review-text"
           placeholder="Review text"
-          value={state}
+          value={reviewText}
           onChange = {handleTextareaChange}
         />
         <div className="add-review__submit">

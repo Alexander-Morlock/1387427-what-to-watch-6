@@ -3,9 +3,9 @@ import Review from './Review';
 import PropTypes from 'prop-types';
 import shapeOfComment from '../../utils/shape-of-comment';
 
-const FilmReviews = (props) => {
-  const leftComments = props.comments.slice(0, Math.round(props.comments.length / 2));
-  const rightComments = props.comments.slice(leftComments.length);
+const FilmReviews = ({comments}) => {
+  const leftComments = comments.slice(0, Math.round(comments.length / 2));
+  const rightComments = comments.slice(leftComments.length);
   const LeftColumn = () => {
     return (
       <div className="movie-card__reviews-col">

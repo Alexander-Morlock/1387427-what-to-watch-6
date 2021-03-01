@@ -17,7 +17,9 @@ const MovieList = (props) => {
             id={movie.id}
             preview_image={movie.preview_image}
             key={movie.name + movie.id}
-            onMouseOver={handleOnMouseOver}/>;
+            onMouseOver={handleOnMouseOver}
+            preview_video_link={movie.preview_video_link}
+            poster_image={movie.poster_image}/>;
         })
       }
     </div>
@@ -29,7 +31,10 @@ MovieList.propTypes = {
       PropTypes.shape({
         "name": PropTypes.string.isRequired,
         "preview_image": PropTypes.string.isRequired,
-        "id": PropTypes.number.isRequired
+        "id": PropTypes.number.isRequired,
+        "onMouseOver": PropTypes.func,
+        "preview_video_link": PropTypes.string.isRequired,
+        "poster_image": PropTypes.string.isRequired
       })
   ).isRequired
 };

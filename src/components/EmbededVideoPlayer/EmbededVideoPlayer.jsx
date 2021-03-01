@@ -8,7 +8,7 @@ const EmbededVideoPlayer = (props) => {
       src={props.src}
       poster={props.poster}
       muted autoPlay
-      onMouseOut={props.onMouseOut}>
+      onMouseOut={props.onMouseOutCallback}>
     </video>
   );
 };
@@ -16,7 +16,7 @@ const EmbededVideoPlayer = (props) => {
 EmbededVideoPlayer.propTypes = {
   "src": PropTypes.string.isRequired,
   "poster": PropTypes.string.isRequired,
-  "onMouseOut": PropTypes.func.isRequired
+  "onMouseOutCallback": PropTypes.func.isRequired
 };
 
 export default EmbededVideoPlayer;

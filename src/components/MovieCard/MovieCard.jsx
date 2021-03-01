@@ -14,11 +14,13 @@ const MovieCard = (props) => {
   };
 
   return isShowVideoPreview
-    ? <EmbededVideoPlayer
-      src={props.preview_video_link}
-      poster={props.poster_image}
-      width="280" height="175"
-      onMouseOut={()=>setToggleVideoPreview(false)}/>
+    ? <article className="small-movie-card catalog__movies-card">
+      <EmbededVideoPlayer
+        src={props.preview_video_link}
+        poster={props.poster_image}
+        width="280" height="175"
+        onMouseOutCallback={() => setToggleVideoPreview(false)} />
+    </article>
     : (
       <article className="small-movie-card catalog__movies-card">
         <div className="small-movie-card__image" data-id={props.id} onMouseOver={onMouseOverHandler}>

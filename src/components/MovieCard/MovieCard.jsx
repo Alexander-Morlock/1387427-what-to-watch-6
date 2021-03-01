@@ -5,12 +5,20 @@ import EmbededVideoPlayer from '../EmbededVideoPlayer/EmbededVideoPlayer';
 
 const MovieCard = (props) => {
   const [isShowVideoPreview, setToggleVideoPreview] = useState(false);
+  let timer = null;
 
   const onMouseOverHandler = (evt) => {
     props.onMouseOver(evt);
-    if (!isShowVideoPreview) {
-      setToggleVideoPreview(true);
-    }
+    timer = window.setTimeout(() => {
+      if (!isShowVideoPreview) {
+        setToggleVideoPreview(true);
+      }
+    }, 1000);
+  };
+
+  const onMouseOutHandler = () => {
+    window.clearTimeout(timer);
+    setToggleVideoPreview(false);
   };
 
   return isShowVideoPreview
@@ -19,7 +27,7 @@ const MovieCard = (props) => {
         src={props.preview_video_link}
         poster={props.poster_image}
         width="280" height="175"
-        onMouseOutCallback={() => setToggleVideoPreview(false)} />
+        onMouseOutCallback={onMouseOutHandler} />
     </article>
     : (
       <article className="small-movie-card catalog__movies-card">

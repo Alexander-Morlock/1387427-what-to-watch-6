@@ -9,7 +9,6 @@ import Film from '../Film/Film';
 import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
-import MoreLikeThis from '../Film/MoreLikeThis';
 
 const App = (props) => {
   return (
@@ -29,7 +28,6 @@ const App = (props) => {
 
         <Route path='/films/:id' exact>
           <Film films={props.films} />
-          <MoreLikeThis />
         </Route>
 
         <Route path='/films/:id/review' exact>

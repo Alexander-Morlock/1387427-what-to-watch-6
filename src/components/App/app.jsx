@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import shapeOfFilm from '../../utils/shape-of-film';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -9,13 +9,18 @@ import Film from '../Film/Film';
 import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
+import {connect} from 'react-redux';
+import {ActionCreator} from '../../store/action';
 
 const App = (props) => {
+
+  useEffect(() => props.getFilms(), []);
+
   return (
     <BrowserRouter>
       <Switch>
         <Route path='/' exact>
-          <MainPage films={props.films} />
+          <MainPage />
         </Route>
 
         <Route path='/login' exact>
@@ -49,5 +54,11 @@ App.propTypes = PropTypes.arrayOf(
     shapeOfFilm()
 ).isRequired;
 
+const mapStateToProps = (store) => ({
+  films: store.films, genres: store.genres});
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  getFilms: () => dispatch(ActionCreator.getMovieList())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

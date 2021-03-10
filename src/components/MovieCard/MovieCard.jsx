@@ -21,25 +21,23 @@ const MovieCard = (props) => {
     setIsHovered(false);
   };
 
-  const renderIfHovered = () => isHovered && timer.current
-    ? <EmbededVideoPlayer
-      src={props.preview_video_link}
-      poster={props.poster_image}
-      width="280" height="175" />
-    : <>
-      <div className="small-movie-card__image" data-id={props.id}>
-        <img src={props.preview_image} alt={props.name} width="280" height="175" />
-      </div>
-      <h3 className="small-movie-card__title">
-        <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
-      </h3>
-    </>;
-
   return <article
     className="small-movie-card catalog__movies-card"
     onMouseEnter={onMouseEnterHandler}
     onMouseLeave={onMouseLeaveHandler}>
-    {renderIfHovered()}
+    {isHovered && timer.current
+      ? <EmbededVideoPlayer
+        src={props.preview_video_link}
+        poster={props.poster_image}
+        width="280" height="175" />
+      : <>
+        <div className="small-movie-card__image" data-id={props.id}>
+          <img src={props.preview_image} alt={props.name} width="280" height="175" />
+        </div>
+        <h3 className="small-movie-card__title">
+          <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
+        </h3>
+      </>}
   </article>;
 };
 

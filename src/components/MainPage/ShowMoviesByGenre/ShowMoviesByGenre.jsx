@@ -19,7 +19,7 @@ import {connect} from 'react-redux';
 // ];
 
 const ShowMoviesByGenre = (props) => {
-  const [selectedGenre, setSelectedGenre] = useState(`All genres`);
+  const [selectedGenre, setSelectedGenre] = useState(props.genres[0] || `All genres`);
 
   return (
     <div className="page-content">
@@ -59,10 +59,14 @@ const ShowMoviesByGenre = (props) => {
   );
 };
 
-ShowMoviesByGenre.propTypes = PropTypes.arrayOf(
-    shapeOfFilm()
-).isRequired;
-
+ShowMoviesByGenre.propTypes = {
+  films: PropTypes.arrayOf(
+      shapeOfFilm()
+  ).isRequired,
+  genres: PropTypes.arrayOf(
+      PropTypes.string
+  ).isRequired
+};
 
 const mapStateToProps = (store) => ({
   films: store.films, genres: store.genres

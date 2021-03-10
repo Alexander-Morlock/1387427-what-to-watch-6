@@ -5,19 +5,6 @@ import shapeOfFilm from '../../../utils/shape-of-film';
 import MovieList from '../../MovieList/MovieList';
 import {connect} from 'react-redux';
 
-const Genres = [
-  `All genres`,
-  `Comedies`,
-  `Crime`,
-  `Documentary`,
-  `Dramas`,
-  `Horror`,
-  `Kids & Family`,
-  `Romance`,
-  `Sci-Fi`,
-  `Thrillers`
-];
-
 const ShowMoviesByGenre = (props) => {
   const [selectedGenre, setSelectedGenre] = useState(`All genres`);
 

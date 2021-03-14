@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import MovieCard from '../MovieCard/MovieCard';
+import ShowMoreButton from './ShowMoreButton';
+
+const INCREASE_STEP = 8;
 
 const MovieList = (props) => {
   const [activeFilmState, setActiveFilmState] = useState(0);
   const [maxNumberOfMoviesToShow, setMaxNumberOfMoviesToShow] = useState(8);
+
+  const increaseNumberOfMovies = () => setMaxNumberOfMoviesToShow((prevState) => prevState + INCREASE_STEP);
 
   const handleOnMouseOver = (evt) => {
     setActiveFilmState(evt.target.dataset.id);
@@ -26,11 +31,8 @@ const MovieList = (props) => {
         }
       </div>
       {
-        maxNumberOfMoviesToShow < props.movies.length && <div className="catalog__more">
-          <button className="catalog__button"
-            type="button"
-            onClick={() => setMaxNumberOfMoviesToShow((prevState) => prevState + 8)}>Show more</button>
-        </div>
+        maxNumberOfMoviesToShow < props.movies.length
+          && <ShowMoreButton onClick={increaseNumberOfMovies}/>
       }
     </>
   );

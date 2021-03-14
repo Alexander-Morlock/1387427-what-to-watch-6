@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import shapeOfFilm from '../../utils/shape-of-film';
+import shapeOfMovie from '../../utils/shape-of-movie';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import MainPage from '../MainPage/MainPage';
 import SignIn from '../SignIn/SignIn';
 import MyList from '../MyList/MyList';
-import Film from '../Film/Film';
+import Movie from '../Movie/Movie';
 import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
@@ -14,7 +14,9 @@ import {ActionCreator} from '../../store/action';
 
 const App = (props) => {
 
-  useEffect(() => props.getFilms(), []);
+  useEffect(() => {
+    props.getMovies();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -28,19 +30,19 @@ const App = (props) => {
         </Route>
 
         <Route path='/mylist' exact>
-          <MyList films={props.films} />
+          <MyList movies={props.movies} />
         </Route>
 
         <Route path='/films/:id' exact>
-          <Film films={props.films} />
+          <Movie movies={props.movies} />
         </Route>
 
         <Route path='/films/:id/review' exact>
-          <AddReview films={props.films} />
+          <AddReview movies={props.movies} />
         </Route>
 
         <Route path='/player/:id' exact >
-          <Player films={props.films} />
+          <Player movies={props.movies} />
         </Route>
         <Route>
           <Page404 />
@@ -51,14 +53,14 @@ const App = (props) => {
 };
 
 App.propTypes = PropTypes.arrayOf(
-    shapeOfFilm()
+    shapeOfMovie()
 ).isRequired;
 
 const mapStateToProps = (store) => ({
-  films: store.films, genres: store.genres});
+  movies: store.movies, genres: store.genres});
 
 const mapDispatchToProps = (dispatch) => ({
-  getFilms: () => dispatch(ActionCreator.getMovieList())
+  getMovies: () => dispatch(ActionCreator.getMovieList())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

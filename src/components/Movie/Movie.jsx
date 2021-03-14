@@ -1,31 +1,31 @@
 import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import shapeOfFilm from '../../utils/shape-of-film';
+import shapeOfMovie from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
-import FilmOverView from './FilmOverView';
-import FilmDetails from './FilmDetails';
-import FilmReviews from './FilmReviews';
+import MovieOverView from './MovieOverView';
+import MovieDetails from './MovieDetails';
+import MovieReviews from './MovieReviews';
 import {getComments} from '../../mocks/comments';
 import MoreLikeThis from './MoreLikeThis';
 
-const Film = (props) => {
+const Movie = (props) => {
   const [state, setState] = useState(`Overview`);
   const showActiveClassNameIf = (text) => state === text ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`;
   const handleClick = (evt) => setState(evt.target.innerText);
   const {id} = useParams();
-  const movie = props.films.find((film) => film.id === +id);
-  const sameFilms = props.films.filter((film) => film.genre === movie.genre);
-  const FilmInfo = () => {
+  const movie = props.movies.find((m) => m.id === +id);
+  const sameMovies = props.movies.filter((m) => m.genre === movie.genre);
+  const MovieInfo = () => {
     switch (state) {
       case `Details`: {
-        return <FilmDetails movie={movie} />;
+        return <MovieDetails movie={movie} />;
       }
       case `Reviews`: {
-        return <FilmReviews comments={getComments(movie.id)} />;
+        return <MovieReviews comments={getComments(movie.id)} />;
       }
       default: {
-        return <FilmOverView movie={movie} />;
+        return <MovieOverView movie={movie} />;
       }
     }
   };
@@ -103,18 +103,18 @@ const Film = (props) => {
                   <span className="movie-rating__count">240 ratings</span>
                 </p>
               </div>
-              <FilmInfo />
+              <MovieInfo />
             </div>
           </div>
         </div>
       </section>
-      <MoreLikeThis films={sameFilms} />
+      <MoreLikeThis movies={sameMovies} />
     </>
   );
 };
 
-Film.propTypes = PropTypes.arrayOf(
-    shapeOfFilm()
+Movie.propTypes = PropTypes.arrayOf(
+    shapeOfMovie()
 ).isRequired;
 
-export default Film;
+export default Movie;

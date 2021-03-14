@@ -1,9 +1,16 @@
-import {getFilms} from '../mocks/films';
+import {getMovies} from '../mocks/movies';
 import {ActionType} from './action';
-const ALL_GENRES = `All genres`;
+import {ALL_GENRES} from '../utils/constants';
+
+const getGenres = (movies) => {
+  const genres = new Set();
+  genres.add(ALL_GENRES);
+  movies.forEach((f) => genres.add(f.genre));
+  return [...genres];
+};
 
 const initialState = {
-  films: [],
+  movies: [],
   genres: []
 };
 
@@ -14,17 +21,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case ActionType.GET_MOVIE_LIST: {
-      const films = getFilms();
-      const genres = new Set();
-      genres.add(ALL_GENRES);
-      films.forEach((f) => genres.add(f.genre));
-      return {...state, films, genres: [...genres]};
-    }
-
-    case ActionType.GET_FILMS_BY_GENRE: {
-      return action.payload === ALL_GENRES
-        ? state
-        : {...state, films: state.films.filter((f) => f.genre === action.payload)};
+      const movies = getMovies();
+      const genres = getGenres(movies);
+      return {...state, movies, genres};
     }
 
     default: {

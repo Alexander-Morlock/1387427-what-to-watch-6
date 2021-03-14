@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import MovieList from '../MovieList/MovieList';
 import PropTypes from 'prop-types';
-import shapeOfFilm from '../../utils/shape-of-film';
+import shapeOfMovie from '../../utils/shape-of-movie';
 
 const MyList = (props) => {
   return (
@@ -25,7 +25,7 @@ const MyList = (props) => {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <MovieList films={props.films}/>
+        <MovieList movies={props.movies}/>
 
       </section>
       <footer className="page-footer">
@@ -45,7 +45,7 @@ const MyList = (props) => {
 };
 
 MyList.propTypes = PropTypes.arrayOf(
-    shapeOfFilm()
+    shapeOfMovie()
 ).isRequired;
 
 export default MyList;

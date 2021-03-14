@@ -9,14 +9,14 @@ const FilmReviews = ({comments}) => {
   const LeftColumn = () => {
     return (
       <div className="movie-card__reviews-col">
-        {leftComments.map((comment, i) => <Review comment={comment} key={`L${i}`}/>)}
+        {leftComments.map((comment) => <Review comment={comment} key={comment.id}/>)}
       </div>
     );
   };
   const RightColumn = () => {
     return (
       <div className="movie-card__reviews-col">
-        {rightComments.map((comment, i) => <Review comment={comment} key={`R${i}`}/>)}
+        {rightComments.map((comment) => <Review comment={comment} key={comment.id}/>)}
       </div>
     );
   };

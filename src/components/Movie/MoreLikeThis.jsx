@@ -8,7 +8,7 @@ const MoreLikeThis = (props) => {
     <div className="page-content">
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
-        <MovieList films={props.films}/>
+        <MovieList movies={props.movies}/>
       </section>
       <footer className="page-footer">
         <div className="logo">
@@ -28,7 +28,7 @@ const MoreLikeThis = (props) => {
 };
 
 MoreLikeThis.propTypes = {
-  films: PropTypes.arrayOf(
+  movies: PropTypes.arrayOf(
       PropTypes.shape({
         "name": PropTypes.string.isRequired,
         "preview_image": PropTypes.string.isRequired,

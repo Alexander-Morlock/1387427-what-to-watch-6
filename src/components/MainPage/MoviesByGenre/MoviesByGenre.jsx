@@ -1,25 +1,13 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import shapeOfFilm from '../../../utils/shape-of-film';
+import shapeOfMovie from '../../../utils/shape-of-movie';
 import MovieList from '../../MovieList/MovieList';
 import {connect} from 'react-redux';
-
-// const Genres = [
-//   `All genres`,
-//   `Comedies`,
-//   `Crime`,
-//   `Documentary`,
-//   `Dramas`,
-//   `Horror`,
-//   `Kids & Family`,
-//   `Romance`,
-//   `Sci-Fi`,
-//   `Thrillers`
-// ];
+import {ALL_GENRES} from '../../../utils/constants';
 
 const ShowMoviesByGenre = (props) => {
-  const [selectedGenre, setSelectedGenre] = useState(props.genres[0] || `All genres`);
+  const [selectedGenre, setSelectedGenre] = useState(props.genres[0] || ALL_GENRES);
 
   return (
     <div className="page-content">
@@ -27,7 +15,7 @@ const ShowMoviesByGenre = (props) => {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
         <ul className="catalog__genres-list">
           {
-            props.genres.map((g, i) => <li key={`genre ${i}`}
+            props.genres.map((g) => <li key={`genre ${g}`}
               onClick={(evt) => setSelectedGenre(evt.target.innerText)}
               className={`catalog__genres-item ${selectedGenre === g && `catalog__genres-item--active`}`}>
               <Link to="#" className="catalog__genres-link">{g}</Link>
@@ -35,13 +23,10 @@ const ShowMoviesByGenre = (props) => {
           }
         </ul>
 
-        <MovieList films={selectedGenre === `All genres`
-          ? props.films
-          : props.films.filter((f) => f.genre.toLowerCase() === selectedGenre.toLowerCase())} />
+        <MovieList movies={selectedGenre === ALL_GENRES
+          ? props.movies
+          : props.movies.filter((f) => f.genre.toLowerCase() === selectedGenre.toLowerCase())} />
 
-        <div className="catalog__more">
-          <button className="catalog__button" type="button">Show more</button>
-        </div>
       </section>
       <footer className="page-footer">
         <div className="logo">
@@ -60,8 +45,8 @@ const ShowMoviesByGenre = (props) => {
 };
 
 ShowMoviesByGenre.propTypes = {
-  films: PropTypes.arrayOf(
-      shapeOfFilm()
+  movies: PropTypes.arrayOf(
+      shapeOfMovie()
   ).isRequired,
   genres: PropTypes.arrayOf(
       PropTypes.string
@@ -69,7 +54,7 @@ ShowMoviesByGenre.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  films: store.films, genres: store.genres
+  movies: store.movies, genres: store.genres
 });
 
 export default connect(mapStateToProps)(ShowMoviesByGenre);

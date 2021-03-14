@@ -1,5 +1,5 @@
 import React from 'react';
-import ShowMoviesByGenre from './ShowMoviesByGenre/ShowMoviesByGenre';
+import MoviesByGenre from './MoviesByGenre/MoviesByGenre';
 
 const MainPage = () => {
   return (
@@ -52,7 +52,7 @@ const MainPage = () => {
           </div>
         </div>
       </section>
-      <ShowMoviesByGenre />
+      <MoviesByGenre />
     </div>
   );
 };

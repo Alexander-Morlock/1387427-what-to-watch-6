@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import EmbededVideoPlayer from '../EmbededVideoPlayer/EmbededVideoPlayer';
@@ -20,6 +20,10 @@ const MovieCard = (props) => {
     timer.current = null;
     setIsHovered(false);
   };
+
+  useEffect(() => {
+    return onMouseLeaveHandler;
+  }, []);
 
   return <article
     className="small-movie-card catalog__movies-card"

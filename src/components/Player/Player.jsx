@@ -1,11 +1,11 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import shapeOfFilm from '../../utils/shape-of-film';
+import shapeOfMovie from '../../utils/shape-of-movie';
 
 const Player = (props) => {
   const {id} = useParams();
-  const movie = props.films.find((film) => film.id === +id);
+  const movie = props.movies.find((m) => m.id === +id);
   const movieTitle = movie.name;
 
   return (
@@ -41,7 +41,7 @@ const Player = (props) => {
 };
 
 Player.propTypes = PropTypes.arrayOf(
-    shapeOfFilm()
+    shapeOfMovie()
 ).isRequired;
 
 export default Player;

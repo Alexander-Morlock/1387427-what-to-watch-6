@@ -4,30 +4,40 @@ import MovieCard from '../MovieCard/MovieCard';
 
 const MovieList = (props) => {
   const [activeFilmState, setActiveFilmState] = useState(0);
+  const [maxNumberOfMoviesToShow, setMaxNumberOfMoviesToShow] = useState(8);
+
   const handleOnMouseOver = (evt) => {
     setActiveFilmState(evt.target.dataset.id);
   };
 
   return (
-    <div className="catalog__movies-list" data-active={activeFilmState}>
-      {
-        props.films.map((movie) => {
-          return <MovieCard
+    <>
+      <div className="catalog__movies-list" data-active={activeFilmState}>
+        {
+          props.movies.slice(0, maxNumberOfMoviesToShow).map((movie) => <MovieCard
             name={movie.name}
             id={movie.id}
             preview_image={movie.preview_image}
             key={movie.name + movie.id}
             onMouseOver={handleOnMouseOver}
             preview_video_link={movie.preview_video_link}
-            poster_image={movie.poster_image}/>;
-        })
+            poster_image={movie.poster_image} />
+          )
+        }
+      </div>
+      {
+        maxNumberOfMoviesToShow < props.movies.length && <div className="catalog__more">
+          <button className="catalog__button"
+            type="button"
+            onClick={() => setMaxNumberOfMoviesToShow((prevState) => prevState + 8)}>Show more</button>
+        </div>
       }
-    </div>
+    </>
   );
 };
 
 MovieList.propTypes = {
-  films: PropTypes.arrayOf(
+  movies: PropTypes.arrayOf(
       PropTypes.shape({
         "name": PropTypes.string.isRequired,
         "preview_image": PropTypes.string.isRequired,

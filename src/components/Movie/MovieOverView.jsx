@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FilmOverView = (props) => {
+const MovieOverView = (props) => {
   return (
     <div className="movie-card__text">
       <p>{props.movie.description}</p>
@@ -11,7 +11,7 @@ const FilmOverView = (props) => {
   );
 };
 
-FilmOverView.propTypes = {
+MovieOverView.propTypes = {
   movie: PropTypes.shape({
     "description": PropTypes.string.isRequired,
     "director": PropTypes.string.isRequired,
@@ -19,4 +19,4 @@ FilmOverView.propTypes = {
   })
 };
 
-export default FilmOverView;
+export default MovieOverView;

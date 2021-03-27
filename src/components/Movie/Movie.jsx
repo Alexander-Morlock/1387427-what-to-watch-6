@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shapeOfMovie from '../../utils/shape-of-movie';
@@ -7,7 +7,7 @@ import MovieOverView from './MovieOverView';
 import MovieDetails from './MovieDetails';
 import MovieReviews from './MovieReviews';
 import MoreLikeThis from './MoreLikeThis';
-import {getAllMoviesThunk, getCommentsThunk} from '../../store/api-actions';
+import {getCommentsThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
 
@@ -22,6 +22,25 @@ const Movie = (props) => {
 
   const history = useHistory();
   const openPlayer = () => history.push(`/player/${id}`);
+
+  useEffect(() => {
+    props.getComment(movie.id);
+  }, []);
+
+  let ratingText = `Bad`;
+  if (movie.rating >= 3 && movie.rating < 5) {
+    ratingText = `Normal`;
+  }
+  if (movie.rating >= 5 && movie.rating < 8) {
+    ratingText = `Good`;
+  }
+  if (movie.rating >= 8 && movie.rating < 10) {
+    ratingText = `Very good`;
+  }
+  if (movie.rating >= 10) {
+    ratingText = `Awesome`;
+  }
+
 
   const MovieInfo = () => {
     switch (state) {
@@ -106,8 +125,8 @@ const Movie = (props) => {
               <div className="movie-rating">
                 <div className="movie-rating__score">{movie.rating}</div>
                 <p className="movie-rating__meta">
-                  <span className="movie-rating__level">Very good</span>
-                  <span className="movie-rating__count">240 ratings</span>
+                  <span className="movie-rating__level">{ratingText}</span>
+                  <span className="movie-rating__count">{movie.scores_count} ratings</span>
                 </p>
               </div>
               <MovieInfo />
@@ -124,7 +143,6 @@ Movie.propTypes = {
   movies: PropTypes.arrayOf(
       shapeOfMovie()).isRequired,
   getComment: PropTypes.func,
-  getMovies: PropTypes.func,
   getSameMovies: PropTypes.func,
   comments: PropTypes.arrayOf(
       shapeOfComment()
@@ -137,8 +155,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getComment: (id) => dispatch(getCommentsThunk(id)),
-  getMovies: () => dispatch(getAllMoviesThunk())
+  getComment: (id) => dispatch(getCommentsThunk(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

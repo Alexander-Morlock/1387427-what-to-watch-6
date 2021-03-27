@@ -2,9 +2,12 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shapeOfMovie from '../../utils/shape-of-movie';
+import {connect} from 'react-redux';
+import {getAllMoviesThunk} from '../../store/api-actions';
 
 const Player = (props) => {
   const {id} = useParams();
+
   const movie = props.movies.find((m) => m.id === +id);
   const movieTitle = movie.name;
 
@@ -44,4 +47,13 @@ Player.propTypes = PropTypes.arrayOf(
     shapeOfMovie()
 ).isRequired;
 
-export default Player;
+
+const mapStateToProps = (store) => ({
+  movies: store.movies
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getMovies: () => dispatch(getAllMoviesThunk())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);

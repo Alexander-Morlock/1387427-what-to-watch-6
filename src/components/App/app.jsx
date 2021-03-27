@@ -11,6 +11,7 @@ import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
 import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
+import Loader from '../Loader/Loader';
 
 const App = (props) => {
 
@@ -25,7 +26,7 @@ const App = (props) => {
   }
 
   return (
-    <BrowserRouter>
+    props.movies[0] ? <BrowserRouter>
       <Switch>
         <Route path='/' exact>
           <MainPage />
@@ -36,7 +37,7 @@ const App = (props) => {
         </Route>
 
         <Route path='/mylist' exact>
-          <MyList movies={props.movies} />
+          <MyList />
         </Route>
 
         <Route path='/films/:id' exact>
@@ -44,17 +45,17 @@ const App = (props) => {
         </Route>
 
         <Route path='/films/:id/review' exact>
-          <AddReview movies={props.movies} />
+          <AddReview />
         </Route>
 
         <Route path='/player/:id' exact >
-          <Player movies={props.movies} />
+          <Player />
         </Route>
         <Route>
           <Page404 />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </BrowserRouter> : <Loader />
   );
 };
 

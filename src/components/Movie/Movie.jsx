@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shapeOfMovie from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
@@ -10,15 +10,19 @@ import MoreLikeThis from './MoreLikeThis';
 import {getAllMoviesThunk, getCommentsThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
-import Loader from '../Loader/Loader';
 
 const Movie = (props) => {
   const [state, setState] = useState(`Overview`);
   const showActiveClassNameIf = (text) => state === text ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`;
   const handleClick = (evt) => setState(evt.target.innerText);
+
   const {id} = useParams();
   const movie = props.movies.find((m) => m.id === +id);
   const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
+
+  const history = useHistory();
+  const openPlayer = () => history.push(`/player/${id}`);
+
   const MovieInfo = () => {
     switch (state) {
       case `Details`: {
@@ -33,15 +37,8 @@ const Movie = (props) => {
     }
   };
 
-  useEffect(() => {
-    props.getComment(+id);
-    if (!movie) {
-      props.getMovies(+id);
-    }
-  }, [id]);
-
   return (
-    movie ? <>
+    <>
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
@@ -70,15 +67,15 @@ const Movie = (props) => {
                 <span className="movie-card__year">{movie.released}</span>
               </p>
               <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button">
+                <button className="btn btn--play movie-card__button" type="button" onClick={openPlayer}>
                   <svg viewBox="0 0 19 19" width={19} height={19}>
-                    <use xlinkto="#play-s" />
+                    <use xlinkHref="#play-s" />
                   </svg>
                   <span>Play</span>
                 </button>
                 <button className="btn btn--list movie-card__button" type="button">
                   <svg viewBox="0 0 19 20" width={19} height={20}>
-                    <use xlinkto="#add" />
+                    <use xlinkHref="#add" />
                   </svg>
                   <span>My list</span>
                 </button>
@@ -120,7 +117,6 @@ const Movie = (props) => {
       </section>
       <MoreLikeThis movies={sameMovies} />
     </>
-      : <Loader />
   );
 };
 
@@ -142,7 +138,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getComment: (id) => dispatch(getCommentsThunk(id)),
-  getMovies: (id) => dispatch(getAllMoviesThunk(id))
+  getMovies: () => dispatch(getAllMoviesThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

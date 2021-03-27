@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shapeOfMovie from '../../utils/shape-of-movie';
@@ -6,8 +6,11 @@ import {Link} from 'react-router-dom';
 import MovieOverView from './MovieOverView';
 import MovieDetails from './MovieDetails';
 import MovieReviews from './MovieReviews';
-import {getComments} from '../../mocks/comments';
 import MoreLikeThis from './MoreLikeThis';
+import {getCommentsThunk, getMovieThunk} from '../../store/api-actions';
+import {connect} from 'react-redux';
+import shapeOfComment from '../../utils/shape-of-comment';
+import Loader from '../Loader/Loader';
 
 const Movie = (props) => {
   const [state, setState] = useState(`Overview`);
@@ -15,14 +18,14 @@ const Movie = (props) => {
   const handleClick = (evt) => setState(evt.target.innerText);
   const {id} = useParams();
   const movie = props.movies.find((m) => m.id === +id);
-  const sameMovies = props.movies.filter((m) => m.genre === movie.genre);
+  const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
   const MovieInfo = () => {
     switch (state) {
       case `Details`: {
         return <MovieDetails movie={movie} />;
       }
       case `Reviews`: {
-        return <MovieReviews comments={getComments(movie.id)} />;
+        return <MovieReviews comments={props.comments} />;
       }
       default: {
         return <MovieOverView movie={movie} />;
@@ -30,8 +33,15 @@ const Movie = (props) => {
     }
   };
 
+  useEffect(() => {
+    props.getComment(+id);
+    if (!movie) {
+      props.getMovie(+id);
+    }
+  }, [id]);
+
   return (
-    <>
+    movie ? <>
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
@@ -110,11 +120,29 @@ const Movie = (props) => {
       </section>
       <MoreLikeThis movies={sameMovies} />
     </>
+      : <Loader />
   );
 };
 
-Movie.propTypes = PropTypes.arrayOf(
-    shapeOfMovie()
-).isRequired;
+Movie.propTypes = {
+  movies: PropTypes.arrayOf(
+      shapeOfMovie()).isRequired,
+  getComment: PropTypes.func,
+  getMovie: PropTypes.func,
+  getSameMovies: PropTypes.func,
+  comments: PropTypes.arrayOf(
+      shapeOfComment()
+  )
+};
 
-export default Movie;
+const mapStateToProps = (store) => ({
+  comments: store.comments,
+  movies: store.movies
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getComment: (id) => dispatch(getCommentsThunk(id)),
+  getMovie: (id) => dispatch(getMovieThunk(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movie);

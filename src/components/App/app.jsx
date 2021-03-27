@@ -10,13 +10,19 @@ import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
 import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {getAllMoviesThunk} from '../../store/api-actions';
 
 const App = (props) => {
 
   useEffect(() => {
     props.getMovies();
   }, []);
+
+  const loaderIcon = document.getElementById(`loader-icon`);
+
+  if (loaderIcon && props.movies[0]) {
+    loaderIcon.remove();
+  }
 
   return (
     <BrowserRouter>
@@ -34,7 +40,7 @@ const App = (props) => {
         </Route>
 
         <Route path='/films/:id' exact>
-          <Movie movies={props.movies} />
+          <Movie />
         </Route>
 
         <Route path='/films/:id/review' exact>
@@ -60,7 +66,7 @@ const mapStateToProps = (store) => ({
   movies: store.movies, genres: store.genres});
 
 const mapDispatchToProps = (dispatch) => ({
-  getMovies: () => dispatch(ActionCreator.getMovieList())
+  getMovies: () => dispatch(getAllMoviesThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

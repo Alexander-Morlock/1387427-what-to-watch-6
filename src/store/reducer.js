@@ -1,4 +1,3 @@
-import {getMovies} from '../mocks/movies';
 import {ActionType} from './action';
 import {ALL_GENRES} from '../utils/constants';
 
@@ -16,14 +15,31 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.CHANGE_GENRE: {
-      return state;
+
+    case ActionType.GET_ALL_MOVIES: {
+      return {
+        ...state,
+        movies: action.payload,
+        genres: getGenres(action.payload)
+      };
     }
 
-    case ActionType.GET_MOVIE_LIST: {
-      const movies = getMovies();
-      const genres = getGenres(movies);
-      return {...state, movies, genres};
+    case ActionType.GET_MOVIE: {
+      return {
+        ...state,
+        movies: action.payload
+      };
+    }
+
+    case ActionType.GET_COMMENTS: {
+      return {
+        ...state,
+        comments: action.payload
+      };
+    }
+
+    case ActionType.CHANGE_GENRE: {
+      return state;
     }
 
     default: {

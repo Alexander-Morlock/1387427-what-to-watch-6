@@ -3,7 +3,7 @@ import Review from './Review';
 import PropTypes from 'prop-types';
 import shapeOfComment from '../../utils/shape-of-comment';
 
-const FilmReviews = ({comments}) => {
+const MovieReviews = ({comments = []}) => {
   const leftComments = comments.slice(0, Math.round(comments.length / 2));
   const rightComments = comments.slice(leftComments.length);
   const LeftColumn = () => {
@@ -29,10 +29,10 @@ const FilmReviews = ({comments}) => {
   );
 };
 
-FilmReviews.propTypes = {
+MovieReviews.propTypes = {
   comments: PropTypes.arrayOf(
       shapeOfComment()
-  ).isRequired
+  )
 };
 
-export default FilmReviews;
+export default MovieReviews;

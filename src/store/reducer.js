@@ -24,13 +24,6 @@ const reducer = (state = initialState, action) => {
       };
     }
 
-    case ActionType.GET_MOVIE: {
-      return {
-        ...state,
-        movies: action.payload
-      };
-    }
-
     case ActionType.GET_COMMENTS: {
       return {
         ...state,

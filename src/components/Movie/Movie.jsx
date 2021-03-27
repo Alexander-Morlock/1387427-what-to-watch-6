@@ -7,7 +7,7 @@ import MovieOverView from './MovieOverView';
 import MovieDetails from './MovieDetails';
 import MovieReviews from './MovieReviews';
 import MoreLikeThis from './MoreLikeThis';
-import {getCommentsThunk, getMovieThunk} from '../../store/api-actions';
+import {getAllMoviesThunk, getCommentsThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
 import Loader from '../Loader/Loader';
@@ -36,7 +36,7 @@ const Movie = (props) => {
   useEffect(() => {
     props.getComment(+id);
     if (!movie) {
-      props.getMovie(+id);
+      props.getMovies(+id);
     }
   }, [id]);
 
@@ -128,7 +128,7 @@ Movie.propTypes = {
   movies: PropTypes.arrayOf(
       shapeOfMovie()).isRequired,
   getComment: PropTypes.func,
-  getMovie: PropTypes.func,
+  getMovies: PropTypes.func,
   getSameMovies: PropTypes.func,
   comments: PropTypes.arrayOf(
       shapeOfComment()
@@ -142,7 +142,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getComment: (id) => dispatch(getCommentsThunk(id)),
-  getMovie: (id) => dispatch(getMovieThunk(id))
+  getMovies: (id) => dispatch(getAllMoviesThunk(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

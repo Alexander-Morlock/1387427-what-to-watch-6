@@ -1,8 +1,10 @@
 import {ActionCreator} from "./action";
 import {createAPI} from '../api/api';
-import React from 'react';
 
-const unauthorized = () => <h1>UNAUTHORIZED</h1>;
+const unauthorized = () => {
+  const err = new Error(`Unauthorized access attempt!`);
+  throw err;
+};
 const api = createAPI(unauthorized);
 
 export const getAllMoviesAndPromoThunk = () => (dispatch) => {
@@ -34,3 +36,26 @@ export const getCommentsThunk = (id) => (dispatch) => {
     });
 };
 
+export const requiredAuthorizationThunk = () => (dispatch) => {
+  api.get(`/login`)
+    .then((res) => dispatch(ActionCreator.requiredAuthorization(res.data)))
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
+export const tryToAuthorizeThunk = (email, password) => (dispatch) => {
+  api.post(`/login`, {email, password})
+    .then((res) => dispatch(ActionCreator.tryToAuthorize(res.data)))
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
+export const logOutThunk = () => (dispatch) => {
+  api.get(`/logout`)
+    .then((res) => dispatch(ActionCreator.logOut(res.data)))
+    .catch((err) => {
+      throw new Error(err);
+    });
+};

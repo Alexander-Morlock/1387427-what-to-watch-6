@@ -28,7 +28,7 @@ const MoreLikeThis = (props) => {
 };
 
 MoreLikeThis.propTypes = {
-  movies: PropTypes.arrayOf(
+  "movies": PropTypes.arrayOf(
       PropTypes.shape({
         "name": PropTypes.string.isRequired,
         "preview_image": PropTypes.string.isRequired,

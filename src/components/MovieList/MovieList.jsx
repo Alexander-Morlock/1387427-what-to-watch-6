@@ -39,7 +39,7 @@ const MovieList = (props) => {
 };
 
 MovieList.propTypes = {
-  movies: PropTypes.arrayOf(
+  "movies": PropTypes.arrayOf(
       PropTypes.shape({
         "name": PropTypes.string.isRequired,
         "preview_image": PropTypes.string.isRequired,

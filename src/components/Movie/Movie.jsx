@@ -10,6 +10,10 @@ import MoreLikeThis from './MoreLikeThis';
 import {getCommentsThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
+import {ActionCreator} from '../../store/action';
+import shapeOfUser from '../../utils/shape-of-user';
+
+let movie = {};
 
 const Movie = (props) => {
   const [state, setState] = useState(`Overview`);
@@ -17,7 +21,7 @@ const Movie = (props) => {
   const handleClick = (evt) => setState(evt.target.innerText);
 
   const {id} = useParams();
-  const movie = props.movies.find((m) => m.id === +id);
+  movie = props.movies.find((m) => m.id === +id);
   const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
 
   const history = useHistory();
@@ -25,6 +29,9 @@ const Movie = (props) => {
 
   useEffect(() => {
     props.getComment(movie.id);
+    if (state !== `Overview`) {
+      setState(`Overview`);
+    }
   }, [id]);
 
   let ratingText = `Bad`;
@@ -73,9 +80,15 @@ const Movie = (props) => {
               </Link>
             </div>
             <div className="user-block">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
-              </div>
+              {
+                props.user
+                  ? <div className="user-block__avatar">
+                    <Link to="/mylist"><img src={props.user.avatar_url} alt="User avatar" width="63" height="63" /></Link>
+                  </div>
+                  : <div className="user-block">
+                    <Link to="/login" className="user-block__link">Sign in</Link>
+                  </div>
+              }
             </div>
           </header>
           <div className="movie-card__wrap">
@@ -92,7 +105,7 @@ const Movie = (props) => {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list movie-card__button" type="button">
+                <button className="btn btn--list movie-card__button" type="button" onClick={props.addMovieToMyList}>
                   <svg viewBox="0 0 19 20" width={19} height={20}>
                     <use xlinkHref="#add" />
                   </svg>
@@ -140,22 +153,26 @@ const Movie = (props) => {
 };
 
 Movie.propTypes = {
-  movies: PropTypes.arrayOf(
+  "movies": PropTypes.arrayOf(
       shapeOfMovie()).isRequired,
-  getComment: PropTypes.func,
-  getSameMovies: PropTypes.func,
-  comments: PropTypes.arrayOf(
+  "getComment": PropTypes.func,
+  "getSameMovies": PropTypes.func,
+  "comments": PropTypes.arrayOf(
       shapeOfComment()
-  )
+  ),
+  "addMovieToMyList": PropTypes.func,
+  "user": shapeOfUser()
 };
 
 const mapStateToProps = (store) => ({
   comments: store.comments,
-  movies: store.movies
+  movies: store.movies,
+  user: store.user
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getComment: (id) => dispatch(getCommentsThunk(id))
+  getComment: (id) => dispatch(getCommentsThunk(id)),
+  addMovieToMyList: () => dispatch(ActionCreator.addMovieToMyList(movie))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

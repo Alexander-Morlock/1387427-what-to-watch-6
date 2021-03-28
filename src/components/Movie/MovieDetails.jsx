@@ -34,7 +34,7 @@ const FilmDetails = (props) => {
 };
 
 FilmDetails.propTypes = {
-  movie: PropTypes.shape({
+  "movie": PropTypes.shape({
     "director": PropTypes.string.isRequired,
     "starring": PropTypes.arrayOf(PropTypes.string).isRequired,
     "run_time": PropTypes.number.isRequired,

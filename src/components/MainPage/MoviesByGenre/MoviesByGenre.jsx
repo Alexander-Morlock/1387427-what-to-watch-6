@@ -45,10 +45,10 @@ const ShowMoviesByGenre = (props) => {
 };
 
 ShowMoviesByGenre.propTypes = {
-  movies: PropTypes.arrayOf(
+  "movies": PropTypes.arrayOf(
       shapeOfMovie()
   ).isRequired,
-  genres: PropTypes.arrayOf(
+  "genres": PropTypes.arrayOf(
       PropTypes.string
   ).isRequired
 };

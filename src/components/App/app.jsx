@@ -10,12 +10,13 @@ import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
 import {connect} from 'react-redux';
-import {getAllMoviesAndPromoThunk} from '../../store/api-actions';
+import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import Loader from '../Loader/Loader';
 
 const App = (props) => {
 
   useEffect(() => {
+    props.requiredAuthorization();
     props.getAllMoviesAndPromo();
   }, []);
 
@@ -67,7 +68,8 @@ const mapStateToProps = (store) => ({
   movies: store.movies, genres: store.genres, promo: store.promo});
 
 const mapDispatchToProps = (dispatch) => ({
-  getAllMoviesAndPromo: () => dispatch(getAllMoviesAndPromoThunk())
+  getAllMoviesAndPromo: () => dispatch(getAllMoviesAndPromoThunk()),
+  requiredAuthorization: () => dispatch(requiredAuthorizationThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

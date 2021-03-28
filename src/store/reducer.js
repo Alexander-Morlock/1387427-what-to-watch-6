@@ -1,5 +1,5 @@
 import {ActionType} from './action';
-import {ALL_GENRES} from '../utils/constants';
+import {ALL_GENRES, AuthorizationStatus} from '../utils/constants';
 
 const getGenres = (movies) => {
   const genres = new Set();
@@ -10,7 +10,9 @@ const getGenres = (movies) => {
 
 const initialState = {
   movies: [],
-  genres: []
+  genres: [],
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  myList: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -36,6 +38,51 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload
+      };
+    }
+
+    case ActionType.REQUIRED_AUTHORIZATION: {
+      return {
+        ...state,
+        authorizationStatus: action.payload.id
+          ? AuthorizationStatus.AUTH
+          : AuthorizationStatus.NO_AUTH,
+        user: {
+          ...action.payload
+        }
+      };
+    }
+
+    case ActionType.TRY_TO_AUTHORIZE: {
+      return {
+        ...state,
+        user: {
+          ...action.payload
+        },
+        authorizationStatus: AuthorizationStatus.AUTH
+      };
+    }
+
+    case ActionType.LOG_OUT: {
+      return {
+        ...state,
+        authorizationStatus: AuthorizationStatus.NO_AUTH,
+        user: {}
+      };
+    }
+
+    case ActionType.ADD_MOVIE_TO_MY_LIST: {
+      const newList = state.myList;
+      const index = newList.length > 0
+        ? newList.findIndex((m) => m.id === action.payload.id)
+        : -1;
+
+      if (index === -1) {
+        newList.push(action.payload);
+      }
+      return {
+        ...state,
+        myList: newList
       };
     }
 

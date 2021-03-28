@@ -6,17 +6,8 @@ const unauthorized = () => <h1>UNAUTHORIZED</h1>;
 const api = createAPI(unauthorized);
 
 export const getAllMoviesAndPromoThunk = () => (dispatch) => {
-  let movies = [];
-  let promo = {};
-  api.get(`/films`)
-    .then((res) => {
-      movies = res.data;
-    })
-    .then(() => api.get(`/films/promo`))
-    .then((res) => {
-      promo = res.data;
-    })
-    .then(() => dispatch(ActionCreator.getAllMoviesAndPromo({movies, promo})))
+  Promise.all([api.get(`/films`), api.get(`/films/promo`)])
+    .then((results) => dispatch(ActionCreator.getAllMoviesAndPromo({movies: results[0].data, promo: results[1].data})))
     .catch((err) => {
       throw new Error(err);
     });

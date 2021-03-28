@@ -25,7 +25,7 @@ const Movie = (props) => {
 
   useEffect(() => {
     props.getComment(movie.id);
-  }, []);
+  }, [id]);
 
   let ratingText = `Bad`;
   if (movie.rating >= 3 && movie.rating < 5) {

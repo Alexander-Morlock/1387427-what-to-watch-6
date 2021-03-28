@@ -7,7 +7,12 @@ const api = createAPI(unauthorized);
 
 export const getAllMoviesAndPromoThunk = () => (dispatch) => {
   Promise.all([api.get(`/films`), api.get(`/films/promo`)])
-    .then((results) => dispatch(ActionCreator.getAllMoviesAndPromo({movies: results[0].data, promo: results[1].data})))
+    .then((results) => dispatch(ActionCreator.getAllMoviesAndPromo(
+        {
+          movies: results[0].data,
+          promo: results[1].data
+        }
+    )))
     .catch((err) => {
       throw new Error(err);
     });

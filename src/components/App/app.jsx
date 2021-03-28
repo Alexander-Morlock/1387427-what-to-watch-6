@@ -10,13 +10,13 @@ import AddReview from '../AddReview/AddReview';
 import Player from '../Player/Player';
 import Page404 from '../Page404/Page404';
 import {connect} from 'react-redux';
-import {getAllMoviesThunk} from '../../store/api-actions';
+import {getAllMoviesAndPromoThunk} from '../../store/api-actions';
 import Loader from '../Loader/Loader';
 
 const App = (props) => {
 
   useEffect(() => {
-    props.getMovies();
+    props.getAllMoviesAndPromo();
   }, []);
 
   const loaderIcon = document.getElementById(`loader-icon`);
@@ -64,10 +64,10 @@ App.propTypes = PropTypes.arrayOf(
 ).isRequired;
 
 const mapStateToProps = (store) => ({
-  movies: store.movies, genres: store.genres});
+  movies: store.movies, genres: store.genres, promo: store.promo});
 
 const mapDispatchToProps = (dispatch) => ({
-  getMovies: () => dispatch(getAllMoviesThunk())
+  getAllMoviesAndPromo: () => dispatch(getAllMoviesAndPromoThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

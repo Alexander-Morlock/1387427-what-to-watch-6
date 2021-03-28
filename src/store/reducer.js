@@ -31,6 +31,15 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case ActionType.GET_ALL_MOVIES_AND_PROMO: {
+      return {
+        ...state,
+        movies: action.payload.movies,
+        promo: action.payload.promo,
+        genres: getGenres(action.payload.movies)
+      };
+    }
+
     case ActionType.CHANGE_GENRE: {
       return state;
     }

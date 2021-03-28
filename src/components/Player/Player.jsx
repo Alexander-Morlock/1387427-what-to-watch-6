@@ -1,18 +1,20 @@
 import React, {useRef, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useLocation, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shapeOfMovie from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
 
 const Player = (props) => {
+  const location = useLocation();
+
   const {id} = useParams();
 
   const movie = props.movies.find((m) => m.id === +id);
   const movieTitle = movie.name;
 
   const history = useHistory();
-  const closePlayer = () => history.push(`/films/${id}`);
+  const closePlayer = () => location.search ? history.push(`/`) : history.push(`/films/${id}`);
 
   const videoRef = useRef();
   let togglerPosition = 0;

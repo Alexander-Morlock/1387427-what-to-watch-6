@@ -6,23 +6,27 @@ import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
 
 const Player = (props) => {
+  const {id} = useParams();
   const location = useLocation();
 
-  const {id} = useParams();
-
   const movie = props.movies.find((m) => m.id === +id);
-  const movieTitle = movie.name;
 
   const history = useHistory();
   const closePlayer = () => location.search ? history.push(`/`) : history.push(`/films/${id}`);
 
   const videoRef = useRef();
+  const [currentTime, setCurrentTime] = useState(0);
+  let interval = null;
   let togglerPosition = 0;
-  if (videoRef.current) {
-    togglerPosition = videoRef.current.currentTime / videoRef.current.duration * 100;
-  }
 
-  const getDuration = () => `${Math.floor((movie.run_time) / 60)}:${Math.floor(movie.run_time % 60)}:00`;
+  const getTimeLeft = () => {
+    const seconds = Math.floor(movie.run_time * 60 - currentTime);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(seconds / 3600);
+
+    return `${hours}:${minutes - hours * 60}:${seconds - minutes * 60}${currentTime === 0 ? `0` : ``}`;
+  };
+
   const [buttonState, setButtonState] = useState({isStarted: false, isPlayback: false});
 
   const playButtonHandler = () => {
@@ -30,10 +34,18 @@ const Player = (props) => {
   };
 
   if (videoRef.current) {
+    togglerPosition = currentTime / videoRef.current.duration * 100;
     if (buttonState.isPlayback) {
       videoRef.current.play();
+
+      interval = setInterval(() => {
+        if (videoRef.current) {
+          setCurrentTime(videoRef.current.currentTime);
+        }
+      }, 1000);
     } else {
       videoRef.current.pause();
+      clearInterval(interval);
     }
   }
 
@@ -55,7 +67,7 @@ const Player = (props) => {
             <progress className="player__progress" value={togglerPosition} max={100} />
             <div className="player__toggler" style={{left: `${togglerPosition}%`}}>Toggler</div>
           </div>
-          <div className="player__time-value">{getDuration()}</div>
+          <div className="player__time-value">{getTimeLeft()}</div>
         </div>
         <div className="player__controls-row">
           <button type="button" className="player__play" onClick={playButtonHandler}>
@@ -70,7 +82,7 @@ const Player = (props) => {
             }
             <span>Play</span>
           </button>
-          <div className="player__name">{movieTitle}</div>
+          <div className="player__name">{movie.name}</div>
           <button type="button" className="player__full-screen" onClick={toggleFullScreen}>
             <svg viewBox="0 0 27 27" width={27} height={27}>
               <use xlinkHref="#full-screen" />

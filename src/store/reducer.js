@@ -16,6 +16,14 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
 
+    case ActionType.GET_ALL_MOVIES_AND_PROMO: {
+      return {
+        ...state,
+        ...action.payload,
+        genres: getGenres(action.payload.movies)
+      };
+    }
+
     case ActionType.GET_ALL_MOVIES: {
       return {
         ...state,
@@ -28,15 +36,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload
-      };
-    }
-
-    case ActionType.GET_ALL_MOVIES_AND_PROMO: {
-      return {
-        ...state,
-        movies: action.payload.movies,
-        promo: action.payload.promo,
-        genres: getGenres(action.payload.movies)
       };
     }
 

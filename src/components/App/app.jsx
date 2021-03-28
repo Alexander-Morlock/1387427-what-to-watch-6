@@ -12,6 +12,7 @@ import Page404 from '../Page404/Page404';
 import {connect} from 'react-redux';
 import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import Loader from '../Loader/Loader';
+import PrivateRoute from '../PrivateRoute/PrivateRoute';
 
 const App = (props) => {
 
@@ -37,17 +38,13 @@ const App = (props) => {
           <SignIn />
         </Route>
 
-        <Route path='/mylist' exact>
-          <MyList />
-        </Route>
+        <PrivateRoute path='/mylist' exact render={() => <MyList />}/>
 
         <Route path='/films/:id' exact>
           <Movie />
         </Route>
 
-        <Route path='/films/:id/review' exact>
-          <AddReview />
-        </Route>
+        <PrivateRoute path='/films/:id/review' exact render={() => <AddReview />}/>
 
         <Route path='/player/:id' exact >
           <Player />

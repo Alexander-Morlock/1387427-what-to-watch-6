@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import shapeOfMovie from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
 import CommentForm from './CommentForm';
+import {connect} from 'react-redux';
+import shapeOfUser from '../../utils/shape-of-user';
 
 const AddReview = (props) => {
   const {id} = useParams();
@@ -33,10 +35,17 @@ const AddReview = (props) => {
               </li>
             </ul>
           </nav>
-          <div className="user-block">
-            <div className="user-block__avatar">
-              <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
-            </div>
+          <div className="user-block" style={{position: `relative`}}>
+            {
+              props.user
+                ? <div className="user-block__avatar">
+                  <Link to="/mylist"><img src={props.user.avatar_url} alt="User avatar" width="63" height="63" /></Link>
+                  <p style={{position: `absolute`, top: `3px`, right: `75px`, fontSize: `17px`}}>{props.user.email}</p>
+                </div>
+                : <div className="user-block">
+                  <Link to="/login" className="user-block__link">Sign in</Link>
+                </div>
+            }
           </div>
         </header>
         <div className="movie-card__poster movie-card__poster--small">
@@ -51,8 +60,21 @@ const AddReview = (props) => {
   );
 };
 
-AddReview.propTypes = PropTypes.arrayOf(
-    shapeOfMovie()
-).isRequired;
+AddReview.propTypes = {
+  "movies": PropTypes.arrayOf(
+      shapeOfMovie()
+  ).isRequired,
+  "postReview": PropTypes.func,
+  "user": shapeOfUser()
+};
 
-export default AddReview;
+const mapStateToProps = (store) => ({
+  movies: store.movies,
+  user: store.user
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  postReview: () => dispatch()
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddReview);

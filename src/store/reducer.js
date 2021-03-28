@@ -67,7 +67,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         authorizationStatus: AuthorizationStatus.NO_AUTH,
-        user: {}
+        user: null
       };
     }
 

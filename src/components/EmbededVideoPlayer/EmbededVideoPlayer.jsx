@@ -12,8 +12,8 @@ const EmbededVideoPlayer = (props) => {
 };
 
 EmbededVideoPlayer.propTypes = {
-  "src": PropTypes.string.isRequired,
-  "poster": PropTypes.string.isRequired
+  src: PropTypes.string.isRequired,
+  poster: PropTypes.string.isRequired
 };
 
 export default EmbededVideoPlayer;

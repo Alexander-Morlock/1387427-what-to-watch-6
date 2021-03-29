@@ -6,7 +6,7 @@ export const ActionType = {
   GET_COMMENTS: `GET_COMMENTS`,
   GET_ALL_MOVIES_AND_PROMO: `GET_ALL_MOVIES_AND_PROMO`,
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  TRY_TO_AUTHORIZE: `TRY_TO_AUTHORIZE`,
+  SEND_AUTHORIZATION: `SEND_AUTHORIZATION`,
   LOG_OUT: `LOG_OUT`,
   ADD_MOVIE_TO_MY_LIST: `ADD_MOVIE_TO_MY_LIST`
 };
@@ -32,8 +32,8 @@ export const ActionCreator = {
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status
   }),
-  tryToAuthorize: (response) => ({
-    type: ActionType.TRY_TO_AUTHORIZE,
+  sendAuthorization: (response) => ({
+    type: ActionType.SEND_AUTHORIZATION,
     payload: response
   }),
   logOut: (response) => ({

@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import shapeOfMovie from '../../utils/shape-of-movie';
+import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
 
@@ -96,7 +96,7 @@ const Player = (props) => {
 };
 
 Player.propTypes = PropTypes.arrayOf(
-    shapeOfMovie()
+    getShapeOfMoviePropType()
 ).isRequired;
 
 

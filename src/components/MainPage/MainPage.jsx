@@ -3,11 +3,10 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
 import {logOutThunk} from '../../store/api-actions';
-import shapeOfMovie from '../../utils/shape-of-movie';
+import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import MoviesByGenre from './MoviesByGenre/MoviesByGenre';
-import {Link} from 'react-router-dom';
-import shapeOfUser from '../../utils/shape-of-user';
 import {ActionCreator} from '../../store/action';
+import UserAvatar from '../UserAvatar/UserAvatar';
 
 let promoMovie = {};
 
@@ -31,18 +30,7 @@ const MainPage = (props) => {
               <span className="logo__letter logo__letter--3">W</span>
             </a>
           </div>
-          <div className="user-block" style={{position: `relative`}}>
-            {
-              props.user
-                ? <div className="user-block__avatar">
-                  <Link to="/mylist"><img src={props.user.avatar_url} alt="User avatar" width="63" height="63" /></Link>
-                  <p style={{position: `absolute`, top: `3px`, right: `75px`, fontSize: `17px`}}>{props.user.email}</p>
-                </div>
-                : <div className="user-block">
-                  <Link to="/login" className="user-block__link">Sign in</Link>
-                </div>
-            }
-          </div>
+          <UserAvatar />
         </header>
         <div className="movie-card__wrap">
           <div className="movie-card__info">
@@ -80,15 +68,13 @@ const MainPage = (props) => {
 };
 
 MainPage.propTypes = {
-  "promo": shapeOfMovie().isRequired,
+  "promo": getShapeOfMoviePropType().isRequired,
   "logOut": PropTypes.func,
-  "addMovieToMyList": PropTypes.func,
-  "user": shapeOfUser()
+  "addMovieToMyList": PropTypes.func
 };
 
 const mapStateToProps = (store) => ({
-  promo: store.promo,
-  user: store.user
+  promo: store.promo
 });
 
 const mapDispatchToProps = (dispatch) => ({

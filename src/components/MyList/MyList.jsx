@@ -2,9 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import MovieList from '../MovieList/MovieList';
 import PropTypes from 'prop-types';
-import shapeOfMovie from '../../utils/shape-of-movie';
-import shapeOfUser from '../../utils/shape-of-user';
+import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
+import UserAvatar from '../UserAvatar/UserAvatar';
 
 const MyList = (props) => {
   return (
@@ -18,13 +18,7 @@ const MyList = (props) => {
           </Link>
         </div>
         <h1 className="page-title user-page__title">My list</h1>
-        <div className="user-block">
-          {
-            props.user && <div className="user-block__avatar">
-              <img src={props.user.avatar_url} alt="User avatar" width="63" height="63" />
-            </div>
-          }
-        </div>
+        <UserAvatar />
       </header>
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
@@ -50,14 +44,12 @@ const MyList = (props) => {
 
 MyList.propTypes = {
   "movies": PropTypes.arrayOf(
-      shapeOfMovie()
-  ).isRequired,
-  "user": shapeOfUser()
+      getShapeOfMoviePropType()
+  ).isRequired
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.myList,
-  user: store.user
+  movies: store.myList
 });
 
 export default connect(mapStateToProps)(MyList);

@@ -1,17 +1,19 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {tryToAuthorizeThunk} from '../../store/api-actions';
+import {sendAuthorizationThunk} from '../../store/api-actions';
 import {AuthorizationStatus} from '../../utils/constants';
 
 const SignIn = (props) => {
   const [validationError, setValidationError] = useState(null);
 
   const history = useHistory();
-  if (props.authorizationStatus === AuthorizationStatus.AUTH) {
-    history.push(`/`);
-  }
+  useEffect(() => {
+    if (props.authorizationStatus === AuthorizationStatus.AUTH) {
+      history.push(`/`);
+    }
+  }, [props.authorizationStatus]);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -20,12 +22,12 @@ const SignIn = (props) => {
     const email = emailRef.current;
     const password = passwordRef.current;
     evt.preventDefault();
-    if (!(/^[0-9a-z@.]*$/i.test(email.value)) || !email.value) {
+    if (!email.value || !(/^[0-9a-z@.]*$/i.test(email.value))) {
       setValidationError(`email`);
     } else if (!password.value) {
       setValidationError(`password`);
     } else {
-      props.tryToAuthorize(emailRef.current.value, passwordRef.current.value);
+      props.sendAuthorization(emailRef.current.value, passwordRef.current.value);
     }
   };
 
@@ -92,7 +94,7 @@ const SignIn = (props) => {
 
 SignIn.propTypes = {
   "authorizationStatus": PropTypes.string,
-  "tryToAuthorize": PropTypes.func
+  "sendAuthorization": PropTypes.func
 };
 
 const mapStateToProps = (store) => ({
@@ -100,7 +102,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  tryToAuthorize: (id) => dispatch(tryToAuthorizeThunk(id))
+  sendAuthorization: (id) => dispatch(sendAuthorizationThunk(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

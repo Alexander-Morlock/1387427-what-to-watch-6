@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import shapeOfMovie from '../../utils/shape-of-movie';
+import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
 import MovieOverView from './MovieOverView';
 import MovieDetails from './MovieDetails';
@@ -11,17 +11,18 @@ import {getCommentsThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
 import {ActionCreator} from '../../store/action';
-import shapeOfUser from '../../utils/shape-of-user';
+import {MovieRating, MovieTabs} from '../../utils/constants';
+import UserAvatar from '../UserAvatar/UserAvatar';
 
 let movie = {};
 
 const Movie = (props) => {
-  const [state, setState] = useState(`Overview`);
+  const [state, setState] = useState(MovieTabs.OVERVIEW);
   const showActiveClassNameIf = (text) => state === text ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`;
   const handleClick = (evt) => setState(evt.target.innerText);
 
   const {id} = useParams();
-  movie = props.movies.find((m) => m.id === +id);
+  movie = props.movies.find((m) => m.id === parseInt(id, 10));
   const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
 
   const history = useHistory();
@@ -29,32 +30,32 @@ const Movie = (props) => {
 
   useEffect(() => {
     props.getComment(movie.id);
-    if (state !== `Overview`) {
-      setState(`Overview`);
+    if (state !== MovieTabs.OVERVIEW) {
+      setState(MovieTabs.OVERVIEW);
     }
   }, [id]);
 
-  let ratingText = `Bad`;
+  let ratingText = MovieRating.BAD;
   if (movie.rating >= 3 && movie.rating < 5) {
-    ratingText = `Normal`;
+    ratingText = MovieRating.NORMAL;
   }
   if (movie.rating >= 5 && movie.rating < 8) {
-    ratingText = `Good`;
+    ratingText = MovieRating.GOOD;
   }
   if (movie.rating >= 8 && movie.rating < 10) {
-    ratingText = `Very good`;
+    ratingText = MovieRating.VERY_GOOD;
   }
   if (movie.rating >= 10) {
-    ratingText = `Awesome`;
+    ratingText = MovieRating.AWESOME;
   }
 
 
   const MovieInfo = () => {
     switch (state) {
-      case `Details`: {
+      case MovieTabs.DETAILS: {
         return <MovieDetails movie={movie} />;
       }
-      case `Reviews`: {
+      case MovieTabs.REVIEWS: {
         return <MovieReviews comments={props.comments} />;
       }
       default: {
@@ -79,18 +80,7 @@ const Movie = (props) => {
                 <span className="logo__letter logo__letter--3">W</span>
               </Link>
             </div>
-            <div className="user-block" style={{position: `relative`}}>
-              {
-                props.user
-                  ? <div className="user-block__avatar">
-                    <Link to="/mylist"><img src={props.user.avatar_url} alt="User avatar" width="63" height="63" /></Link>
-                    <p style={{position: `absolute`, top: `3px`, right: `75px`, fontSize: `17px`}}>{props.user.email}</p>
-                  </div>
-                  : <div className="user-block">
-                    <Link to="/login" className="user-block__link">Sign in</Link>
-                  </div>
-              }
-            </div>
+            <UserAvatar />
           </header>
           <div className="movie-card__wrap">
             <div className="movie-card__desc">
@@ -125,13 +115,13 @@ const Movie = (props) => {
             <div className="movie-card__desc">
               <nav className="movie-nav movie-card__nav">
                 <ul className="movie-nav__list">
-                  <li className={showActiveClassNameIf(`Overview`)}>
+                  <li className={showActiveClassNameIf(MovieTabs.OVERVIEW)}>
                     <Link to="#" className="movie-nav__link" onClick={handleClick}>Overview</Link>
                   </li>
                   <li className={showActiveClassNameIf(`Details`)}>
                     <Link to="#" className="movie-nav__link" onClick={handleClick}>Details</Link>
                   </li>
-                  <li className={showActiveClassNameIf(`Reviews`)}>
+                  <li className={showActiveClassNameIf(MovieTabs.REVIEWS)}>
                     <Link to="#" className="movie-nav__link" onClick={handleClick}>Reviews</Link>
                   </li>
                 </ul>
@@ -155,20 +145,18 @@ const Movie = (props) => {
 
 Movie.propTypes = {
   "movies": PropTypes.arrayOf(
-      shapeOfMovie()).isRequired,
+      getShapeOfMoviePropType()).isRequired,
   "getComment": PropTypes.func,
   "getSameMovies": PropTypes.func,
   "comments": PropTypes.arrayOf(
       shapeOfComment()
   ),
-  "addMovieToMyList": PropTypes.func,
-  "user": shapeOfUser()
+  "addMovieToMyList": PropTypes.func
 };
 
 const mapStateToProps = (store) => ({
   comments: store.comments,
-  movies: store.movies,
-  user: store.user
+  movies: store.movies
 });
 
 const mapDispatchToProps = (dispatch) => ({

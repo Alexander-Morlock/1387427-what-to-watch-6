@@ -1,10 +1,7 @@
 import {ActionCreator} from "./action";
 import {createAPI} from '../api/api';
 
-const unauthorized = () => {
-  const err = new Error(`Unauthorized access attempt!`);
-  throw err;
-};
+const unauthorized = () => {};
 const api = createAPI(unauthorized);
 
 export const getAllMoviesAndPromoThunk = () => (dispatch) => {
@@ -12,50 +9,37 @@ export const getAllMoviesAndPromoThunk = () => (dispatch) => {
     .then((results) => dispatch(ActionCreator.getAllMoviesAndPromo(
         {
           movies: results[0].data,
-          promo: results[1].data
+          promo: results[1].data,
+          connectionStatus: results[0].status
         }
-    )))
-    .catch((err) => {
-      throw new Error(err);
-    });
+    )));
 };
 
 export const getAllMoviesThunk = () => (dispatch) => {
   api.get(`/films`)
-    .then((res) => dispatch(ActionCreator.getAllMovies(res.data)))
-    .catch((err) => {
-      throw new Error(err);
-    });
+    .then((res) => dispatch(ActionCreator.getAllMovies(res.data)));
 };
 
 export const getCommentsThunk = (id) => (dispatch) => {
   api.get(`/comments/${id}`)
-    .then((res) => dispatch(ActionCreator.getComments(res.data)))
-    .catch((err) => {
-      throw new Error(err);
-    });
+    .then((res) => dispatch(ActionCreator.getComments(res.data)));
 };
 
 export const requiredAuthorizationThunk = () => (dispatch) => {
   api.get(`/login`)
-    .then((res) => dispatch(ActionCreator.requiredAuthorization(res.data)))
-    .catch((err) => {
-      throw new Error(err);
+    .then((res) => {
+      if (res) {
+        dispatch(ActionCreator.requiredAuthorization(res.data));
+      }
     });
 };
 
-export const tryToAuthorizeThunk = (email, password) => (dispatch) => {
+export const sendAuthorizationThunk = (email, password) => (dispatch) => {
   api.post(`/login`, {email, password})
-    .then((res) => dispatch(ActionCreator.tryToAuthorize(res.data)))
-    .catch((err) => {
-      throw new Error(err);
-    });
+    .then((res) => dispatch(ActionCreator.sendAuthorization(res)));
 };
 
 export const logOutThunk = () => (dispatch) => {
   api.get(`/logout`)
-    .then((res) => dispatch(ActionCreator.logOut(res.data)))
-    .catch((err) => {
-      throw new Error(err);
-    });
+    .then((res) => dispatch(ActionCreator.logOut(res.data)));
 };

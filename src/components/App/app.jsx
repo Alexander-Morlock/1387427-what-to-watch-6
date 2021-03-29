@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import shapeOfMovie from '../../utils/shape-of-movie';
+import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import MainPage from '../MainPage/MainPage';
 import SignIn from '../SignIn/SignIn';
@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import Loader from '../Loader/Loader';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import {ConnectionStatus} from '../../utils/constants';
 
 const App = (props) => {
 
@@ -28,41 +29,52 @@ const App = (props) => {
   }
 
   return (
-    props.movies[0] ? <BrowserRouter>
-      <Switch>
-        <Route path='/' exact>
-          <MainPage />
-        </Route>
+    props.connectionStatus === ConnectionStatus.SUCCESS
+      ? <BrowserRouter>
+        <Switch>
+          <Route path='/' exact>
+            <MainPage />
+          </Route>
 
-        <Route path='/login' exact>
-          <SignIn />
-        </Route>
+          <Route path='/login' exact>
+            <SignIn />
+          </Route>
 
-        <PrivateRoute path='/mylist' exact render={() => <MyList />}/>
+          <PrivateRoute path='/mylist' exact render={() => <MyList />}/>
 
-        <Route path='/films/:id' exact>
-          <Movie />
-        </Route>
+          <Route path='/films/:id' exact>
+            <Movie />
+          </Route>
 
-        <PrivateRoute path='/films/:id/review' exact render={() => <AddReview />}/>
+          <PrivateRoute path='/films/:id/review' exact render={() => <AddReview />}/>
 
-        <Route path='/player/:id' exact >
-          <Player />
-        </Route>
-        <Route>
-          <Page404 />
-        </Route>
-      </Switch>
-    </BrowserRouter> : <Loader />
+          <Route path='/player/:id' exact >
+            <Player />
+          </Route>
+          <Route>
+            <Page404 />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+      : <Loader />
   );
 };
 
-App.propTypes = PropTypes.arrayOf(
-    shapeOfMovie()
-).isRequired;
+App.propTypes = {
+  movies: PropTypes.arrayOf(getShapeOfMoviePropType()).isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
+  promo: getShapeOfMoviePropType(),
+  getAllMoviesAndPromo: PropTypes.func.isRequired,
+  requiredAuthorization: PropTypes.func.isRequired,
+  connectionStatus: PropTypes.number
+};
 
 const mapStateToProps = (store) => ({
-  movies: store.movies, genres: store.genres, promo: store.promo});
+  movies: store.movies,
+  genres: store.genres,
+  promo: store.promo,
+  connectionStatus: store.connectionStatus
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getAllMoviesAndPromo: () => dispatch(getAllMoviesAndPromoThunk()),

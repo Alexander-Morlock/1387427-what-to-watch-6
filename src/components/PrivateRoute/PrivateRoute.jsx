@@ -23,9 +23,9 @@ const PrivateRoute = ({render, path, exact, authorizationStatus}) => {
 PrivateRoute.propTypes = {
   "authorizationStatus": PropTypes.string,
   "path": PropTypes.string,
-  "exact": PropTypes.string,
+  "exact": PropTypes.bool,
   "render": PropTypes.func,
-  "component": PropTypes.Component
+  "component": PropTypes.func
 };
 
 const mapStateToProps = (store) => ({

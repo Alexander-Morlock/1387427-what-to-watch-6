@@ -1,5 +1,5 @@
 import {ActionType} from './action';
-import {ALL_GENRES, AuthorizationStatus} from '../utils/constants';
+import {ALL_GENRES, AuthorizationStatus, ConnectionStatus} from '../utils/constants';
 
 const getGenres = (movies) => {
   const genres = new Set();
@@ -53,13 +53,13 @@ const reducer = (state = initialState, action) => {
       };
     }
 
-    case ActionType.TRY_TO_AUTHORIZE: {
+    case ActionType.SEND_AUTHORIZATION: {
       return {
         ...state,
-        user: {
-          ...action.payload
-        },
-        authorizationStatus: AuthorizationStatus.AUTH
+        user: action.payload.data,
+        authorizationStatus: action.payload.status === ConnectionStatus.SUCCESS
+          ? AuthorizationStatus.AUTH
+          : AuthorizationStatus.NO_AUTH
       };
     }
 

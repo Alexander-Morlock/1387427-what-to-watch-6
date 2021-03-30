@@ -12,7 +12,10 @@ const initialState = {
   movies: [],
   genres: [],
   authorizationStatus: AuthorizationStatus.NO_AUTH,
-  myList: []
+  myList: [],
+  isDataDownloaded: false,
+  isErrorCommentForm: false,
+  isBlockedCommentForm: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,7 +25,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
-        genres: getGenres(action.payload.movies)
+        genres: getGenres(action.payload.movies),
+        isDataDownloaded: true
       };
     }
 
@@ -42,24 +46,26 @@ const reducer = (state = initialState, action) => {
     }
 
     case ActionType.REQUIRED_AUTHORIZATION: {
+      const isSuccess = action.payload.status === ConnectionStatus.SUCCESS;
       return {
         ...state,
-        authorizationStatus: action.payload.id
+        authorizationStatus: isSuccess
           ? AuthorizationStatus.AUTH
           : AuthorizationStatus.NO_AUTH,
-        user: {
-          ...action.payload
-        }
+        user: action.payload.data,
+        connectionStatus: action.payload.status
       };
     }
 
     case ActionType.SEND_AUTHORIZATION: {
+      const isSuccess = action.payload.status === ConnectionStatus.SUCCESS;
       return {
         ...state,
         user: action.payload.data,
-        authorizationStatus: action.payload.status === ConnectionStatus.SUCCESS
+        authorizationStatus: isSuccess
           ? AuthorizationStatus.AUTH
-          : AuthorizationStatus.NO_AUTH
+          : AuthorizationStatus.NO_AUTH,
+        connectionStatus: action.payload.status
       };
     }
 
@@ -86,8 +92,26 @@ const reducer = (state = initialState, action) => {
       };
     }
 
-    case ActionType.CHANGE_GENRE: {
-      return state;
+    case ActionType.BLOCK_COMMENT_FORM: {
+      return {
+        ...state,
+        isBlockedCommentForm: true
+      };
+    }
+
+    case ActionType.UNBLOCK_COMMENT_FORM: {
+      return {
+        ...state,
+        isBlockedCommentForm: false,
+        comments: action.payload
+      };
+    }
+
+    case ActionType.SET_ERROR_COMMENT_FORM: {
+      return {
+        ...state,
+        isErrorCommentForm: true
+      };
     }
 
     default: {

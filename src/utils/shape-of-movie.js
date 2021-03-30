@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-const getShapeOfMoviePropType = () => {
+const shapeOfMovie = () => {
   return PropTypes.shape({
     "name": PropTypes.string.isRequired,
     "poster_image": PropTypes.string.isRequired,
@@ -21,4 +21,4 @@ const getShapeOfMoviePropType = () => {
   });
 };
 
-export default getShapeOfMoviePropType;
+export default shapeOfMovie;

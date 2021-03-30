@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import getShapeOfMoviePropType from '../../utils/shape-of-movie';
+import shapeOfMovie from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
 import MovieOverView from './MovieOverView';
 import MovieDetails from './MovieDetails';
@@ -11,21 +11,25 @@ import {getCommentsThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
 import {ActionCreator} from '../../store/action';
-import {MovieRating, MovieTabs} from '../../utils/constants';
+import {AuthorizationStatus, MovieRating, MovieTabs} from '../../utils/constants';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
 let movie = {};
 
 const Movie = (props) => {
+  const history = useHistory();
   const [state, setState] = useState(MovieTabs.OVERVIEW);
   const showActiveClassNameIf = (text) => state === text ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`;
   const handleClick = (evt) => setState(evt.target.innerText);
 
   const {id} = useParams();
   movie = props.movies.find((m) => m.id === parseInt(id, 10));
+  if (!movie) {
+    history.push(`/404`);
+    return true;
+  }
   const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
 
-  const history = useHistory();
   const openPlayer = () => history.push(`/player/${id}`);
 
   useEffect(() => {
@@ -102,7 +106,10 @@ const Movie = (props) => {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${id}/review`} className="btn movie-card__button">Add review</Link>
+                {
+                  props.authorizationStatus === AuthorizationStatus.AUTH
+                  && <Link to={`/films/${id}/review`} className="btn movie-card__button">Add review</Link>
+                }
               </div>
             </div>
           </div>
@@ -145,18 +152,20 @@ const Movie = (props) => {
 
 Movie.propTypes = {
   "movies": PropTypes.arrayOf(
-      getShapeOfMoviePropType()).isRequired,
+      shapeOfMovie()).isRequired,
   "getComment": PropTypes.func,
   "getSameMovies": PropTypes.func,
   "comments": PropTypes.arrayOf(
       shapeOfComment()
   ),
-  "addMovieToMyList": PropTypes.func
+  "addMovieToMyList": PropTypes.func,
+  "authorizationStatus": PropTypes.string
 };
 
 const mapStateToProps = (store) => ({
   comments: store.comments,
-  movies: store.movies
+  movies: store.movies,
+  authorizationStatus: store.authorizationStatus
 });
 
 const mapDispatchToProps = (dispatch) => ({

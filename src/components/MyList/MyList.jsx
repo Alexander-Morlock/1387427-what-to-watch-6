@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import MovieList from '../MovieList/MovieList';
 import PropTypes from 'prop-types';
-import getShapeOfMoviePropType from '../../utils/shape-of-movie';
+import shapeOfMovie from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
@@ -44,7 +44,7 @@ const MyList = (props) => {
 
 MyList.propTypes = {
   "movies": PropTypes.arrayOf(
-      getShapeOfMoviePropType()
+      shapeOfMovie()
   ).isRequired
 };
 

@@ -13,7 +13,6 @@ import {connect} from 'react-redux';
 import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import Loader from '../Loader/Loader';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
-import {ConnectionStatus} from '../../utils/constants';
 
 const App = (props) => {
 
@@ -29,7 +28,7 @@ const App = (props) => {
   }
 
   return (
-    props.connectionStatus === ConnectionStatus.SUCCESS
+    props.isDataDownloaded
       ? <BrowserRouter>
         <Switch>
           <Route path='/' exact>
@@ -66,14 +65,14 @@ App.propTypes = {
   promo: getShapeOfMoviePropType(),
   getAllMoviesAndPromo: PropTypes.func.isRequired,
   requiredAuthorization: PropTypes.func.isRequired,
-  connectionStatus: PropTypes.number
+  isDataDownloaded: PropTypes.bool,
 };
 
 const mapStateToProps = (store) => ({
   movies: store.movies,
   genres: store.genres,
   promo: store.promo,
-  connectionStatus: store.connectionStatus
+  isDataDownloaded: store.isDataDownloaded
 });
 
 const mapDispatchToProps = (dispatch) => ({

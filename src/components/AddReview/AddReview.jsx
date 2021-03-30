@@ -9,7 +9,7 @@ import UserAvatar from '../UserAvatar/UserAvatar';
 
 const AddReview = (props) => {
   const {id} = useParams();
-  const movie = props.movies.find((m) => m.id === +id);
+  const movie = props.movies.find((m) => m.id === parseInt(id, 10));
   return (
     <section className="movie-card movie-card--full">
       <div className="movie-card__header">
@@ -42,7 +42,7 @@ const AddReview = (props) => {
         </div>
       </div>
       <div className="add-review">
-        <CommentForm />
+        <CommentForm id={parseInt(id, 10)}/>
       </div>
     </section>
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import getShapeOfMoviePropType from '../../../utils/shape-of-movie';
+import shapeOfMovie from '../../../utils/shape-of-movie';
 import MovieList from '../../MovieList/MovieList';
 import {connect} from 'react-redux';
 import {ALL_GENRES} from '../../../utils/constants';
@@ -46,7 +46,7 @@ const ShowMoviesByGenre = (props) => {
 
 ShowMoviesByGenre.propTypes = {
   movies: PropTypes.arrayOf(
-      getShapeOfMoviePropType()
+      shapeOfMovie()
   ).isRequired,
   genres: PropTypes.arrayOf(
       PropTypes.string

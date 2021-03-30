@@ -1,7 +1,8 @@
 import {ActionCreator} from "./action";
 import {createAPI} from '../api/api';
+import {ConnectionStatus} from "../utils/constants";
 
-const unauthorized = () => {};
+const unauthorized = () => { };
 const api = createAPI(unauthorized);
 
 export const getAllMoviesAndPromoThunk = () => (dispatch) => {
@@ -29,7 +30,7 @@ export const requiredAuthorizationThunk = () => (dispatch) => {
   api.get(`/login`)
     .then((res) => {
       if (res) {
-        dispatch(ActionCreator.requiredAuthorization(res.data));
+        dispatch(ActionCreator.requiredAuthorization(res));
       }
     });
 };
@@ -42,4 +43,15 @@ export const sendAuthorizationThunk = (email, password) => (dispatch) => {
 export const logOutThunk = () => (dispatch) => {
   api.get(`/logout`)
     .then((res) => dispatch(ActionCreator.logOut(res.data)));
+};
+
+export const postReviewThunk = (rating, comment, id) => (dispatch) => {
+  api.post(`/comments/${id}`, {rating, comment})
+    .then((res) => {
+      if (res.status === ConnectionStatus.SUCCESS) {
+        dispatch(ActionCreator.unBlockCommentForm(res.data));
+      } else {
+        dispatch(ActionCreator.setErrorCommentForm());
+      }
+    });
 };

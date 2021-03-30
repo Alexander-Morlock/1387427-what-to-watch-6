@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import getShapeOfMoviePropType from '../../utils/shape-of-movie';
@@ -12,11 +12,12 @@ const Player = (props) => {
   const movie = props.movies.find((m) => m.id === +id);
 
   const history = useHistory();
-  const closePlayer = () => location.search ? history.push(`/`) : history.push(`/films/${id}`);
+  const closePlayer = () => location.search
+    ? history.push(`/`)
+    : history.push(`/films/${id}`);
 
   const videoRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
-  let interval = null;
   let togglerPosition = 0;
 
   const getTimeLeft = () => {
@@ -33,22 +34,6 @@ const Player = (props) => {
     setButtonState((prevState) => ({isStarted: true, isPlayback: !prevState.isPlayback}));
   };
 
-  if (videoRef.current) {
-    togglerPosition = currentTime / videoRef.current.duration * 100;
-    if (buttonState.isPlayback) {
-      videoRef.current.play();
-
-      interval = setInterval(() => {
-        if (videoRef.current) {
-          setCurrentTime(videoRef.current.currentTime);
-        }
-      }, 1000);
-    } else {
-      videoRef.current.pause();
-      clearInterval(interval);
-    }
-  }
-
   const toggleFullScreen = () => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -56,6 +41,23 @@ const Player = (props) => {
       document.documentElement.requestFullscreen();
     }
   };
+
+  if (videoRef.current) {
+    togglerPosition = currentTime / videoRef.current.duration * 100;
+
+    if (buttonState.isPlayback) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(videoRef.current.currentTime);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="player">

@@ -11,11 +11,26 @@ export const ConnectionStatus = {
 };
 
 export const MovieRating = {
-  BAD: `Bad`,
-  NORMAL: `Normal`,
-  GOOD: `Good`,
-  VERY_GOOD: `Very good`,
-  AWESOME: `Awesome`
+  BAD: {
+    title: `Bad`,
+    value: 0
+  },
+  NORMAL: {
+    title: `Normal`,
+    value: 3
+  },
+  GOOD: {
+    title: `Good`,
+    value: 5
+  },
+  VERY_GOOD: {
+    title: `Very good`,
+    value: 8
+  },
+  AWESOME: {
+    title: `Awesome`,
+    value: 10
+  }
 };
 
 export const MovieTabs = {

@@ -2,8 +2,7 @@ import {ActionCreator} from "./action";
 import {createAPI} from '../api/api';
 import {ConnectionStatus} from "../utils/constants";
 
-const unauthorized = () => { };
-const api = createAPI(unauthorized);
+const api = createAPI();
 
 export const getAllMoviesAndPromoThunk = () => (dispatch) => {
   Promise.all([api.get(`/films`), api.get(`/films/promo`)])
@@ -55,3 +54,19 @@ export const postReviewThunk = (rating, comment, id) => (dispatch) => {
       }
     });
 };
+
+export const getFavoriteMoviesThunk = () => (dispatch) => {
+  api.get(`/favorite`)
+    .then((res) => dispatch(ActionCreator.getFavoriteMovies(res)));
+};
+
+export const setFavoriteMovieThunk = (id) => (dispatch) => {
+  api.post(`/favorite/${id}/1`)
+    .then((res) => dispatch(ActionCreator.setFavoriteMovie(res)));
+};
+
+export const removeMovieFromFavoritesThunk = (id) => (dispatch) => {
+  api.post(`/favorite/${id}/0`)
+    .then((res) => dispatch(ActionCreator.removeMovieFromFavorites(res)));
+};
+

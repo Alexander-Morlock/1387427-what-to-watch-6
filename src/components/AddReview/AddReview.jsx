@@ -52,16 +52,11 @@ const AddReview = (props) => {
 AddReview.propTypes = {
   movies: PropTypes.arrayOf(
       getShapeOfMoviePropType()
-  ).isRequired,
-  postReview: PropTypes.func
+  ).isRequired
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.movies
+  movies: store.MOVIES.movies
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  postReview: () => dispatch()
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddReview);
+export default connect(mapStateToProps)(AddReview);

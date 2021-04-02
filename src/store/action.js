@@ -5,10 +5,12 @@ export const ActionType = {
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
   SEND_AUTHORIZATION: `SEND_AUTHORIZATION`,
   LOG_OUT: `LOG_OUT`,
-  ADD_MOVIE_TO_MY_LIST: `ADD_MOVIE_TO_MY_LIST`,
   BLOCK_COMMENT_FORM: `BLOCK_COMMENT_FORM`,
   UNBLOCK_COMMENT_FORM: `UNBLOCK_COMMENT_FORM`,
-  SET_ERROR_COMMENT_FORM: `SET_ERROR_COMMENT_FORM`
+  SET_ERROR_COMMENT_FORM: `SET_ERROR_COMMENT_FORM`,
+  GET_FAVORITE_MOVIES: `GET_FAVORITE_MOVIES`,
+  SET_FAVORITE_MOVIE: `SET_FAVORITE_MOVIE`,
+  REMOVE_MOVIE_FROM_FAVORITES: `REMOVE_MOVIE_FROM_FAVORITES`
 };
 
 export const ActionCreator = {
@@ -36,10 +38,6 @@ export const ActionCreator = {
     type: ActionType.LOG_OUT,
     payload: response
   }),
-  addMovieToMyList: (movie) => ({
-    type: ActionType.ADD_MOVIE_TO_MY_LIST,
-    payload: movie
-  }),
   blockCommentForm: () => ({
     type: ActionType.BLOCK_COMMENT_FORM
   }),
@@ -49,6 +47,18 @@ export const ActionCreator = {
   }),
   setErrorCommentForm: () => ({
     type: ActionType.SET_ERROR_COMMENT_FORM
+  }),
+  getFavoriteMovies: (response) => ({
+    type: ActionType.GET_FAVORITE_MOVIES,
+    payload: response
+  }),
+  setFavoriteMovie: (response) => ({
+    type: ActionType.SET_FAVORITE_MOVIE,
+    payload: response
+  }),
+  removeMovieFromFavorites: (response) => ({
+    type: ActionType.REMOVE_MOVIE_FROM_FAVORITES,
+    payload: response
   })
 };
 

@@ -28,8 +28,8 @@ UserAvatar.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  user: store.user,
-  authorizationStatus: store.authorizationStatus
+  user: store.AUTH.user,
+  authorizationStatus: store.AUTH.authorizationStatus
 });
 
 export default connect(mapStateToProps)(UserAvatar);

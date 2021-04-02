@@ -103,7 +103,7 @@ Player.propTypes = PropTypes.arrayOf(
 
 
 const mapStateToProps = (store) => ({
-  movies: store.movies
+  movies: store.MOVIES.movies
 });
 
 const mapDispatchToProps = (dispatch) => ({

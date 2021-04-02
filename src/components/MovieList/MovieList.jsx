@@ -1,32 +1,31 @@
-import React, {useState} from 'react';
+import React, {useState, memo} from 'react';
 import PropTypes from 'prop-types';
 import MovieCard from '../MovieCard/MovieCard';
 import ShowMoreButton from './ShowMoreButton';
 
 const INCREASE_STEP = 8;
 
+const collectMoviesId = (movieList) => movieList.map((m) => m.id).sort((a, b) => b - a);
+
+const checkIfArraysAreEqual = (arr1, arr2) => arr1.length === arr2.length && arr1.every((e, index) => e === arr2[index]);
+
 const MovieList = (props) => {
-  const [activeFilmState, setActiveFilmState] = useState(0);
-  const [maxNumberOfMoviesToShow, setMaxNumberOfMoviesToShow] = useState(8);
+  const [maxNumberOfMoviesToShow, setMaxNumberOfMoviesToShow] = useState(INCREASE_STEP);
 
   const increaseNumberOfMovies = () => setMaxNumberOfMoviesToShow((prevState) => prevState + INCREASE_STEP);
 
-  const handleOnMouseOver = (evt) => {
-    setActiveFilmState(evt.target.dataset.id);
-  };
-
   return (
     <>
-      <div className="catalog__movies-list" data-active={activeFilmState}>
+      <div className="catalog__movies-list">
         {
           props.movies.slice(0, maxNumberOfMoviesToShow).map((movie) => <MovieCard
             name={movie.name}
             id={movie.id}
             preview_image={movie.preview_image}
             key={movie.name + movie.id}
-            onMouseOver={handleOnMouseOver}
             preview_video_link={movie.preview_video_link}
-            poster_image={movie.poster_image} />
+            poster_image={movie.poster_image}
+            removeMovieFromFavorites={props.removeMovieFromFavorites} />
           )
         }
       </div>
@@ -48,7 +47,13 @@ MovieList.propTypes = {
         "preview_video_link": PropTypes.string.isRequired,
         "poster_image": PropTypes.string.isRequired
       })
-  ).isRequired
+  ).isRequired,
+  "removeMovieFromFavorites": PropTypes.func
 };
 
-export default MovieList;
+export default memo(MovieList, (prevProps, nextProps) => {
+  return checkIfArraysAreEqual(
+      collectMoviesId(prevProps.movies),
+      collectMoviesId(nextProps.movies)
+  );
+});

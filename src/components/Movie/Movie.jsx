@@ -7,10 +7,9 @@ import MovieOverView from './MovieOverView';
 import MovieDetails from './MovieDetails';
 import MovieReviews from './MovieReviews';
 import MoreLikeThis from './MoreLikeThis';
-import {getCommentsThunk} from '../../store/api-actions';
+import {getCommentsThunk, setFavoriteMovieThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
-import {ActionCreator} from '../../store/action';
 import {AuthorizationStatus, MovieRating, MovieTabs} from '../../utils/constants';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
@@ -18,15 +17,19 @@ let movie = {};
 
 const Movie = (props) => {
   const history = useHistory();
-  const [state, setState] = useState(MovieTabs.OVERVIEW);
-  const showActiveClassNameIf = (text) => state === text ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`;
-  const handleClick = (evt) => setState(evt.target.innerText);
+  const [tabsState, setTabsState] = useState(MovieTabs.OVERVIEW);
+
+  const showActiveClassNameIf = (text) => tabsState === text
+    ? `movie-nav__item movie-nav__item--active`
+    : `movie-nav__item`;
+
+  const handleClick = (evt) => setTabsState(evt.target.innerText);
 
   const {id} = useParams();
   movie = props.movies.find((m) => m.id === parseInt(id, 10));
   if (!movie) {
     history.push(`/404`);
-    return true;
+    return null;
   }
   const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
 
@@ -34,28 +37,31 @@ const Movie = (props) => {
 
   useEffect(() => {
     props.getComment(movie.id);
-    if (state !== MovieTabs.OVERVIEW) {
-      setState(MovieTabs.OVERVIEW);
+    if (tabsState !== MovieTabs.OVERVIEW) {
+      setTabsState(MovieTabs.OVERVIEW);
     }
   }, [id]);
 
-  let ratingText = MovieRating.BAD;
-  if (movie.rating >= 3 && movie.rating < 5) {
-    ratingText = MovieRating.NORMAL;
+  let ratingText = MovieRating.BAD.title;
+  if (movie.rating >= MovieRating.NORMAL.value
+      && movie.rating < MovieRating.GOOD.value) {
+    ratingText = MovieRating.NORMAL.title;
   }
-  if (movie.rating >= 5 && movie.rating < 8) {
-    ratingText = MovieRating.GOOD;
+  if (movie.rating >= MovieRating.GOOD.value
+      && movie.rating < MovieRating.VERY_GOOD.value) {
+    ratingText = MovieRating.GOOD.title;
   }
-  if (movie.rating >= 8 && movie.rating < 10) {
-    ratingText = MovieRating.VERY_GOOD;
+  if (movie.rating >= MovieRating.VERY_GOOD.value
+      && movie.rating < MovieRating.AWESOME.value) {
+    ratingText = MovieRating.VERY_GOOD.title;
   }
-  if (movie.rating >= 10) {
-    ratingText = MovieRating.AWESOME;
+  if (movie.rating >= MovieRating.AWESOME.value) {
+    ratingText = MovieRating.AWESOME.title;
   }
 
 
   const MovieInfo = () => {
-    switch (state) {
+    switch (tabsState) {
       case MovieTabs.DETAILS: {
         return <MovieDetails movie={movie} />;
       }
@@ -125,7 +131,7 @@ const Movie = (props) => {
                   <li className={showActiveClassNameIf(MovieTabs.OVERVIEW)}>
                     <Link to="#" className="movie-nav__link" onClick={handleClick}>Overview</Link>
                   </li>
-                  <li className={showActiveClassNameIf(`Details`)}>
+                  <li className={showActiveClassNameIf(MovieTabs.DETAILS)}>
                     <Link to="#" className="movie-nav__link" onClick={handleClick}>Details</Link>
                   </li>
                   <li className={showActiveClassNameIf(MovieTabs.REVIEWS)}>
@@ -163,14 +169,14 @@ Movie.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  comments: store.comments,
-  movies: store.movies,
-  authorizationStatus: store.authorizationStatus
+  comments: store.MOVIES.comments,
+  movies: store.MOVIES.movies,
+  authorizationStatus: store.AUTH.authorizationStatus
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getComment: (id) => dispatch(getCommentsThunk(id)),
-  addMovieToMyList: () => dispatch(ActionCreator.addMovieToMyList(movie))
+  addMovieToMyList: () => dispatch(setFavoriteMovieThunk(movie.id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

@@ -6,6 +6,8 @@ import MovieList from '../../MovieList/MovieList';
 import {connect} from 'react-redux';
 import {ALL_GENRES} from '../../../utils/constants';
 
+const MAX_COUNT_OF_GENRES = 9;
+
 const ShowMoviesByGenre = (props) => {
   const [selectedGenre, setSelectedGenre] = useState(props.genres[0] || ALL_GENRES);
 
@@ -15,7 +17,7 @@ const ShowMoviesByGenre = (props) => {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
         <ul className="catalog__genres-list">
           {
-            props.genres.map((g) => <li key={`genre ${g}`}
+            props.genres.map((g, i) => i <= MAX_COUNT_OF_GENRES && <li key={`genre ${g}`}
               onClick={(evt) => setSelectedGenre(evt.target.innerText)}
               className={`catalog__genres-item ${selectedGenre === g && `catalog__genres-item--active`}`}>
               <Link to="#" className="catalog__genres-link">{g}</Link>
@@ -54,7 +56,8 @@ ShowMoviesByGenre.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.movies, genres: store.genres
+  movies: store.MOVIES.movies,
+  genres: store.MOVIES.genres
 });
 
 export default connect(mapStateToProps)(ShowMoviesByGenre);

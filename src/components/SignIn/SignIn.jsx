@@ -98,7 +98,7 @@ SignIn.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  authorizationStatus: store.authorizationStatus
+  authorizationStatus: store.AUTH.authorizationStatus
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {postReviewThunk} from '../../store/api-actions';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
-const MAX_RATING = 10;
 const DEFAULT_RATING = 3;
+const MAX_RATING = 10;
+const MESSAGE_MIN_LENGTH = 50;
+const MESSAGE_MAX_LENGTH = 400;
+const ratingValues = new Array(MAX_RATING).fill(null).map((x, i) => i + 1);
 
 const Form = (props) => {
 
@@ -17,7 +20,9 @@ const Form = (props) => {
     rating: DEFAULT_RATING
   });
 
-  const handleTextareaChange = (evt) => {
+  const onClickHandler = (evt) => setFormData({...formData, rating: parseInt(evt.target.value, 10)});
+
+  const onChangeTextarea = (evt) => {
     setFormData(
         {
           ...formData,
@@ -29,7 +34,7 @@ const Form = (props) => {
   const onSubmitHandler = (evt) => {
     evt.preventDefault();
 
-    if (formData.comment.length < 50 || formData.comment.length > 400) {
+    if (formData.comment.length < MESSAGE_MIN_LENGTH || formData.comment.length > MESSAGE_MAX_LENGTH) {
       setFormData(
           {
             ...formData,
@@ -53,8 +58,8 @@ const Form = (props) => {
     }
 
     if (formData.isInvalidTextarea
-        && formData.comment.length >= 50
-        && formData.comment.length <= 400) {
+        && formData.comment.length >= MESSAGE_MIN_LENGTH
+        && formData.comment.length <= MESSAGE_MAX_LENGTH) {
       setFormData(
           {
             ...formData,
@@ -70,7 +75,7 @@ const Form = (props) => {
         {
           formData.isInvalidTextarea &&
             <p style={{textAlign: `center`, color: `red`}}>
-              Message must be 50 - 400 symbols, not more not less
+              Message must be {MESSAGE_MIN_LENGTH} - {MESSAGE_MAX_LENGTH} symbols, not more not less
             </p>
         }
         {
@@ -81,20 +86,13 @@ const Form = (props) => {
         }
         <div className="rating__stars">
           {
-            new Array(MAX_RATING).fill(true).map((e, i) => <>
-              <input
-                key={`star-${i + 1}`}
-                className="rating__input"
-                id={`star-${i + 1}`}
-                type="radio"
-                name="rating"
-                defaultValue={i + 1}
-                defaultChecked={i + 1 === formData.rating}
-                onClick={() => setFormData({...formData, rating: i + 1})}
+            ratingValues.map((r) => <Fragment key={`rating-${r}`}>
+              <input className="rating__input" id={`star-${r}`} type="radio" name="rating" value={r}
+                onChange={onClickHandler}
                 disabled={props.isBlockedCommentForm}
-              />
-              <label className="rating__label" htmlFor={`star-${i + 1}`}>Rating {i + 1}</label>
-            </>)
+                checked={formData.rating === r}/>
+              <label className="rating__label" htmlFor={`star-${r}`}>Rating {r}</label>
+            </Fragment>)
           }
         </div>
       </div>
@@ -104,9 +102,10 @@ const Form = (props) => {
           id="review-text"
           placeholder="Review text"
           value={formData.comment}
-          onChange = {handleTextareaChange}
+          onChange = {onChangeTextarea}
           disabled={props.isBlockedCommentForm}
           style={{outline: formData.isInvalidTextarea ? `3px solid red` : ``}}
+          maxLength={MESSAGE_MAX_LENGTH + 1}
         />
         <div className="add-review__submit">
           <button
@@ -127,8 +126,8 @@ Form.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  isBlockedCommentForm: store.isBlockedCommentForm,
-  isErrorCommentForm: store.isErrorCommentForm
+  isBlockedCommentForm: store.REVIEW.isBlockedCommentForm,
+  isErrorCommentForm: store.REVIEW.isErrorCommentForm
 
 });
 

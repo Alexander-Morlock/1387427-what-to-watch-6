@@ -69,10 +69,10 @@ App.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.movies,
-  genres: store.genres,
-  promo: store.promo,
-  isDataDownloaded: store.isDataDownloaded
+  movies: store.MOVIES.movies,
+  genres: store.MOVIES.genres,
+  promo: store.MOVIES.promo,
+  isDataDownloaded: store.MOVIES.isDataDownloaded
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -8,8 +8,7 @@ const MovieCard = (props) => {
   const timer = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const onMouseEnterHandler = (evt) => {
-    props.onMouseOver(evt);
+  const onMouseEnterHandler = () => {
     timer.current = setTimeout(() => {
       setIsHovered(true);
     }, TIMEOUT);
@@ -35,23 +34,28 @@ const MovieCard = (props) => {
         poster={props.poster_image}
         width="280" height="175" />
       : <>
-        <div className="small-movie-card__image" data-id={props.id}>
+        <div className="small-movie-card__image">
           <img src={props.preview_image} alt={props.name} width="280" height="175" />
         </div>
         <h3 className="small-movie-card__title">
-          <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
+          {
+            !props.removeMovieFromFavorites
+              ? <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
+              : <Link className="small-movie-card__link" to="#" onClick={() => props.removeMovieFromFavorites(props.id)}>{props.name}</Link>
+          }
         </h3>
       </>}
   </article>;
 };
 
 MovieCard.propTypes = {
-  "name": PropTypes.string.isRequired,
-  "preview_image": PropTypes.string.isRequired,
+  "name": PropTypes.string,
+  "preview_image": PropTypes.string,
   "id": PropTypes.number.isRequired,
-  "poster_image": PropTypes.string.isRequired,
-  "preview_video_link": PropTypes.string.isRequired,
-  "onMouseOver": PropTypes.func
+  "poster_image": PropTypes.string,
+  "preview_video_link": PropTypes.string,
+  "onMouseOver": PropTypes.func,
+  "removeMovieFromFavorites": PropTypes.func
 };
 
 export default MovieCard;

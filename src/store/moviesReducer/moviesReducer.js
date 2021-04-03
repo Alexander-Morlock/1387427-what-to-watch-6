@@ -1,5 +1,5 @@
-import {ActionType} from './action';
-import {ALL_GENRES} from '../utils/constants';
+import {ALL_GENRES} from '../../utils/constants';
+import {ActionType} from "./action";
 
 const getGenres = (movies) => {
   const genres = new Set();
@@ -10,6 +10,7 @@ const getGenres = (movies) => {
 
 const initialState = {
   movies: [],
+  promo: {},
   genres: [],
   isDataDownloaded: false
 };

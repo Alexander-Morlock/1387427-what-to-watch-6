@@ -1,5 +1,5 @@
-import {ActionType} from './action';
-import {ConnectionStatus} from '../utils/constants';
+import {ConnectionStatus} from '../../utils/constants';
+import {ActionType} from "./action";
 
 const initialState = {
   myList: []

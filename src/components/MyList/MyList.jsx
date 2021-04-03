@@ -6,6 +6,7 @@ import shapeOfMovie from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import {getFavoriteMoviesThunk, removeMovieFromFavoritesThunk} from '../../store/api-actions';
+import {getMyList} from '../../store/favoritesReducer/selectors';
 
 let isMyListDownloaded = false;
 
@@ -60,7 +61,7 @@ MyList.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.FAVORITE.myList
+  movies: getMyList(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

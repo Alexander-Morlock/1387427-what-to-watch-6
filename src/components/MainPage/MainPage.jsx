@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {logOutThunk} from '../../store/api-actions';
 import MoviesByGenre from './MoviesByGenre/MoviesByGenre';
 import Loader from '../Loader/Loader';
 import MainPageHeader from './MainPageHeader';
+import {getIsDataDownloaded} from '../../store/moviesReducer/selectors';
 
 const MainPage = (props) => {
 
@@ -13,7 +13,6 @@ const MainPage = (props) => {
       <div>
         <MainPageHeader />
         <MoviesByGenre />
-        <a href="#" onClick={() => props.logOut()}>Log out</a>
       </div>
       : <Loader />
   );
@@ -25,11 +24,7 @@ MainPage.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  isDataDownloaded: store.MOVIES.isDataDownloaded
+  isDataDownloaded: getIsDataDownloaded(store)
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  logOut: () => dispatch(logOutThunk())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default connect(mapStateToProps)(MainPage);

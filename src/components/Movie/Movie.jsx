@@ -12,6 +12,8 @@ import {connect} from 'react-redux';
 import shapeOfComment from '../../utils/shape-of-comment';
 import {AuthorizationStatus, MovieRating, MovieTabs} from '../../utils/constants';
 import UserAvatar from '../UserAvatar/UserAvatar';
+import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
+import {getComments, getMovies} from '../../store/moviesReducer/selectors';
 
 let movie = {};
 
@@ -169,9 +171,9 @@ Movie.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  comments: store.MOVIES.comments,
-  movies: store.MOVIES.movies,
-  authorizationStatus: store.AUTH.authorizationStatus
+  comments: getComments(store),
+  movies: getMovies(store),
+  authorizationStatus: getAuthorizationStatus(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

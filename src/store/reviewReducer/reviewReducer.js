@@ -1,4 +1,4 @@
-import {ActionType} from './action';
+import {ActionType} from "./action";
 
 const initialState = {
   isErrorCommentForm: false,
@@ -20,6 +20,7 @@ const reviewReducer = (state = initialState, action) => {
       return {
         ...state,
         isBlockedCommentForm: false,
+        isErrorCommentForm: false,
         comments: action.payload
       };
     }
@@ -27,7 +28,8 @@ const reviewReducer = (state = initialState, action) => {
     case ActionType.SET_ERROR_COMMENT_FORM: {
       return {
         ...state,
-        isErrorCommentForm: true
+        isErrorCommentForm: true,
+        isBlockedCommentForm: false
       };
     }
 

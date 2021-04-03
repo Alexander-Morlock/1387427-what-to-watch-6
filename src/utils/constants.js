@@ -38,3 +38,10 @@ export const MovieTabs = {
   DETAILS: `Details`,
   REVIEWS: `Reviews`
 };
+
+export const NameSpace = {
+  AUTHORIZATION: `AUTH`,
+  FAVORITE: `FAVORITE`,
+  MOVIES: `MOVIES`,
+  REVIEW: `REVIEW`
+};

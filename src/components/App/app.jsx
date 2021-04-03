@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import Loader from '../Loader/Loader';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import {getGenres, getIsDataDownloaded, getMovies, getPromo} from '../../store/moviesReducer/selectors';
 
 const App = (props) => {
 
@@ -62,17 +63,17 @@ const App = (props) => {
 App.propTypes = {
   movies: PropTypes.arrayOf(getShapeOfMoviePropType()).isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  promo: getShapeOfMoviePropType(),
+  promo: getShapeOfMoviePropType().isRequired,
   getAllMoviesAndPromo: PropTypes.func.isRequired,
   requiredAuthorization: PropTypes.func.isRequired,
-  isDataDownloaded: PropTypes.bool,
+  isDataDownloaded: PropTypes.bool
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.MOVIES.movies,
-  genres: store.MOVIES.genres,
-  promo: store.MOVIES.promo,
-  isDataDownloaded: store.MOVIES.isDataDownloaded
+  movies: getMovies(store),
+  genres: getGenres(store),
+  promo: getPromo(store),
+  isDataDownloaded: getIsDataDownloaded(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

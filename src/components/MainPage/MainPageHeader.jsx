@@ -5,6 +5,7 @@ import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import {setFavoriteMovieThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
+import {getPromo} from '../../store/moviesReducer/selectors';
 
 let promoMovieId = null;
 
@@ -62,12 +63,12 @@ const MainPageHeader = (props) => {
 };
 
 MainPageHeader.propTypes = {
-  "promo": getShapeOfMoviePropType(),
+  "promo": getShapeOfMoviePropType().isRequired,
   "addMovieToMyList": PropTypes.func
 };
 
 const mapStateToProps = (store) => ({
-  promo: store.MOVIES.promo
+  promo: getPromo(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,6 +5,7 @@ import shapeOfMovie from '../../../utils/shape-of-movie';
 import MovieList from '../../MovieList/MovieList';
 import {connect} from 'react-redux';
 import {ALL_GENRES} from '../../../utils/constants';
+import {getGenres, getMovies} from '../../../store/moviesReducer/selectors';
 
 const MAX_COUNT_OF_GENRES = 9;
 
@@ -56,8 +57,8 @@ ShowMoviesByGenre.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.MOVIES.movies,
-  genres: store.MOVIES.genres
+  movies: getMovies(store),
+  genres: getGenres(store)
 });
 
 export default connect(mapStateToProps)(ShowMoviesByGenre);

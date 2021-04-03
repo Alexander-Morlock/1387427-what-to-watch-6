@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {postReviewThunk} from '../../store/api-actions';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
+import {getIsBlockedCommentForm, getIsErrorCommentForm} from '../../store/reviewReducer/selectors';
 const DEFAULT_RATING = 3;
 const MAX_RATING = 10;
 const MESSAGE_MIN_LENGTH = 50;
@@ -53,9 +54,6 @@ const Form = (props) => {
   };
 
   useEffect(() => {
-    if (formData.isSubmitted && !props.isBlockedCommentForm) {
-      history.push(`/films/${props.id}`);
-    }
 
     if (formData.isInvalidTextarea
         && formData.comment.length >= MESSAGE_MIN_LENGTH
@@ -68,6 +66,12 @@ const Form = (props) => {
       );
     }
   });
+
+  useEffect(() => {
+    if (formData.isSubmitted && !props.isBlockedCommentForm && !props.isErrorCommentForm) {
+      history.push(`/films/${props.id}`);
+    }
+  }, [props.isBlockedCommentForm, props.isErrorCommentForm]);
 
   return (
     <form action="#" className="add-review__form" onSubmit={onSubmitHandler}>
@@ -126,8 +130,8 @@ Form.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  isBlockedCommentForm: store.REVIEW.isBlockedCommentForm,
-  isErrorCommentForm: store.REVIEW.isErrorCommentForm
+  isBlockedCommentForm: getIsBlockedCommentForm(store),
+  isErrorCommentForm: getIsErrorCommentForm(store)
 
 });
 

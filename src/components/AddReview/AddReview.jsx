@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import CommentForm from './CommentForm';
 import {connect} from 'react-redux';
 import UserAvatar from '../UserAvatar/UserAvatar';
+import {getMovies} from '../../store/moviesReducer/selectors';
 
 const AddReview = (props) => {
   const {id} = useParams();
@@ -56,7 +57,7 @@ AddReview.propTypes = {
 };
 
 const mapStateToProps = (store) => ({
-  movies: store.MOVIES.movies
+  movies: getMovies(store)
 });
 
 export default connect(mapStateToProps)(AddReview);

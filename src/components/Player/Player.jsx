@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import getShapeOfMoviePropType from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
+import {getMovies} from '../../store/moviesReducer/selectors';
 
 const Player = (props) => {
   const {id} = useParams();
@@ -103,7 +104,7 @@ Player.propTypes = PropTypes.arrayOf(
 
 
 const mapStateToProps = (store) => ({
-  movies: store.MOVIES.movies
+  movies: getMovies(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

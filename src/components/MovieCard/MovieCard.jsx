@@ -24,28 +24,33 @@ const MovieCard = (props) => {
     return onMouseLeaveHandler;
   }, []);
 
-  return <article
-    className="small-movie-card catalog__movies-card"
-    onMouseEnter={onMouseEnterHandler}
-    onMouseLeave={onMouseLeaveHandler}>
-    {isHovered && timer.current
-      ? <EmbededVideoPlayer
-        src={props.preview_video_link}
-        poster={props.poster_image}
-        width="280" height="175" />
-      : <>
-        <div className="small-movie-card__image">
-          <img src={props.preview_image} alt={props.name} width="280" height="175" />
-        </div>
-        <h3 className="small-movie-card__title">
-          {
-            !props.removeMovieFromFavorites
-              ? <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
-              : <Link className="small-movie-card__link" to="#" onClick={() => props.removeMovieFromFavorites(props.id)}>{props.name}</Link>
-          }
-        </h3>
-      </>}
-  </article>;
+  return <>
+    <article
+      className="small-movie-card catalog__movies-card"
+      onMouseEnter={onMouseEnterHandler}
+      onMouseLeave={onMouseLeaveHandler}>
+      {isHovered && timer.current
+        ? <EmbededVideoPlayer
+          src={props.preview_video_link}
+          poster={props.poster_image}
+          width="280" height="175" />
+        : <>
+          <div className="small-movie-card__image">
+            <img src={props.preview_image} alt={props.name} width="280" height="175" />
+          </div>
+          <h3 className="small-movie-card__title">
+            <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
+          </h3>
+        </>}
+    </article>
+    {
+      props.removeMovieFromFavorites
+        && <Link className="small-movie-card__link"
+          to="#"
+          style={{fontSize: `11px`, position: `relative`, top: `-6px`, left: `-6px`}}
+          onClick={() => props.removeMovieFromFavorites(props.id)}>[x]</Link>
+    }
+  </>;
 };
 
 MovieCard.propTypes = {

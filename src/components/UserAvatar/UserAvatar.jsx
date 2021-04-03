@@ -14,7 +14,9 @@ const UserAvatar = (props) => {
         props.authorizationStatus === AuthorizationStatus.AUTH
           ? <div className="user-block__avatar">
             <Link to="/mylist"><img src={props.user.avatar_url} alt="User avatar" width="63" height="63" /></Link>
-            <p style={{position: `absolute`, top: `3px`, right: `75px`, fontSize: `17px`}} onClick={props.logOut}>{props.user.email}</p>
+            <p style={{position: `absolute`, top: `3px`, right: `75px`, fontSize: `17px`}}
+              // onClick={props.logOut}
+            >{props.user.email}</p>
           </div>
           : <div className="user-block">
             <Link to="/login" className="user-block__link">Sign in</Link>

@@ -16,8 +16,10 @@ import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors
 import {getComments, getMovies} from '../../store/moviesReducer/selectors';
 
 let movie = {};
+let authorizationStatus = null;
 
 const Movie = (props) => {
+  authorizationStatus = props.authorizationStatus;
   const history = useHistory();
   const [tabsState, setTabsState] = useState(MovieTabs.OVERVIEW);
 
@@ -178,7 +180,11 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getComment: (id) => dispatch(getCommentsThunk(id)),
-  addMovieToMyList: () => dispatch(setFavoriteMovieThunk(movie.id))
+  addMovieToMyList: () => {
+    if (authorizationStatus === AuthorizationStatus.AUTH) {
+      dispatch(setFavoriteMovieThunk(movie.id));
+    }
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

@@ -6,11 +6,15 @@ import UserAvatar from '../UserAvatar/UserAvatar';
 import {setFavoriteMovieThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
 import {getPromo} from '../../store/moviesReducer/selectors';
+import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
+import {AuthorizationStatus} from '../../utils/constants';
 
 let promoMovieId = null;
+let authorizationStatus = null;
 
 const MainPageHeader = (props) => {
   promoMovieId = props.promo.id;
+  authorizationStatus = props.authorizationStatus;
   const history = useHistory();
   const openPlayer = () => history.push(`/player/${props.promo.id}?from_main_page`);
 
@@ -48,7 +52,9 @@ const MainPageHeader = (props) => {
                 </svg>
                 <span>Play</span>
               </button>
-              <button className="btn btn--list movie-card__button" type="button" onClick={props.addMovieToMyList}>
+              <button className="btn btn--list movie-card__button"
+                type="button"
+                onClick={props.addMovieToMyList}>
                 <svg viewBox="0 0 19 20" width="19" height="20">
                   <use xlinkHref="#add" />
                 </svg>
@@ -64,15 +70,21 @@ const MainPageHeader = (props) => {
 
 MainPageHeader.propTypes = {
   "promo": getShapeOfMoviePropType().isRequired,
-  "addMovieToMyList": PropTypes.func
+  "addMovieToMyList": PropTypes.func,
+  "authorizationStatus": PropTypes.string
 };
 
 const mapStateToProps = (store) => ({
-  promo: getPromo(store)
+  promo: getPromo(store),
+  authorizationStatus: getAuthorizationStatus(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addMovieToMyList: () => dispatch(setFavoriteMovieThunk(promoMovieId))
+  addMovieToMyList: () => {
+    if (authorizationStatus === AuthorizationStatus.AUTH) {
+      dispatch(setFavoriteMovieThunk(promoMovieId));
+    }
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPageHeader);

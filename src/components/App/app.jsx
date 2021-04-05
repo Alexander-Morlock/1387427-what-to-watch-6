@@ -10,9 +10,9 @@ import AddReview from '../add-review/add-review';
 import Player from '../player/player';
 import Page404 from '../page-404/page-404';
 import {connect} from 'react-redux';
-import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import Loader from '../loader/loader';
 import PrivateRoute from '../private-route/private-route';
+import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
 import {getGenres, getIsDataDownloaded, getMovies, getPromo} from '../../store/movies-reducer/selectors';
 
 const App = ({movies, getAllMoviesAndPromo, requiredAuthorization, isDataDownloaded}) => {

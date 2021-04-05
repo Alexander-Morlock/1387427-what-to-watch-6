@@ -1,3 +1,4 @@
+import {adaptMovieFromServer} from '../../utils/adapter';
 import {ALL_GENRES} from '../../utils/constants';
 import {ActionType} from "./action";
 
@@ -46,8 +47,8 @@ const moviesReducer = (state = initialState, action) => {
       const updateIndex = state.movies.findIndex((e) => e.id === action.payload.id);
       return {
         ...state,
-        movies: [...state.movies.slice(0, updateIndex), action.payload, ...state.movies.slice(updateIndex + 1)],
-        promo: action.payload.id === state.promo.id ? action.payload : state.promo
+        movies: [...state.movies.slice(0, updateIndex), adaptMovieFromServer(action.payload), ...state.movies.slice(updateIndex + 1)],
+        promo: action.payload.id === state.promo.id ? adaptMovieFromServer(action.payload) : state.promo
       };
     }
 

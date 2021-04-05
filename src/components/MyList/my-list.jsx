@@ -53,11 +53,11 @@ const MyList = ({movies, getFavoriteMovies, removeMovieFromFavorites}) => {
 };
 
 MyList.propTypes = {
-  "movies": PropTypes.arrayOf(
+  movies: PropTypes.arrayOf(
       shapeOfMovie
   ).isRequired,
-  "getFavoriteMovies": PropTypes.func,
-  "removeMovieFromFavorites": PropTypes.func
+  getFavoriteMovies: PropTypes.func,
+  removeMovieFromFavorites: PropTypes.func
 };
 
 const mapStateToProps = (store) => ({

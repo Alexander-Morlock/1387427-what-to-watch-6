@@ -22,10 +22,10 @@ const MovieList = ({movies, removeMovieFromFavorites}) => {
           movies.slice(0, maxNumberOfMoviesToShow).map((movie) => <MovieCard
             name={movie.name}
             id={movie.id}
-            preview_image={movie.preview_image}
+            previewImage={movie.previewImage}
             key={movie.name + movie.id}
-            preview_video_link={movie.preview_video_link}
-            poster_image={movie.poster_image}
+            previewVideoLink={movie.previewVideoLink}
+            posterImage={movie.posterImage}
             removeMovieFromFavorites={removeMovieFromFavorites} />
           )
         }
@@ -39,17 +39,17 @@ const MovieList = ({movies, removeMovieFromFavorites}) => {
 };
 
 MovieList.propTypes = {
-  "movies": PropTypes.arrayOf(
+  movies: PropTypes.arrayOf(
       PropTypes.shape({
-        "name": PropTypes.string.isRequired,
-        "preview_image": PropTypes.string.isRequired,
-        "id": PropTypes.number.isRequired,
-        "onMouseOver": PropTypes.func,
-        "preview_video_link": PropTypes.string.isRequired,
-        "poster_image": PropTypes.string.isRequired
+        name: PropTypes.string.isRequired,
+        previewImage: PropTypes.string.isRequired.isRequired,
+        id: PropTypes.number.isRequired,
+        onMouseOver: PropTypes.func,
+        previewVideoLink: PropTypes.string.isRequired,
+        posterImage: PropTypes.string.isRequired
       })
-  ).isRequired,
-  "removeMovieFromFavorites": PropTypes.func
+  ),
+  removeMovieFromFavorites: PropTypes.func
 };
 
 export default memo(MovieList, (prevProps, nextProps) => {

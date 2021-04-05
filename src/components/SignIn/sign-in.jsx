@@ -94,8 +94,8 @@ const SignIn = ({authorizationStatus, sendAuthorization}) => {
 };
 
 SignIn.propTypes = {
-  "authorizationStatus": PropTypes.string,
-  "sendAuthorization": PropTypes.func
+  authorizationStatus: PropTypes.string,
+  sendAuthorization: PropTypes.func
 };
 
 const mapStateToProps = (store) => ({

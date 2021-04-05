@@ -13,12 +13,20 @@ import {shapeOfComment} from '../../utils/shape-of-comment';
 import {AuthorizationStatus, MovieRating, MovieTabs} from '../../utils/constants';
 import UserAvatar from '../UserAvatar/user-avatar';
 import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
-import {getComments, getMovies} from '../../store/moviesReducer/selectors';
+import {getComments, getIsDataDownloaded, getMovies} from '../../store/moviesReducer/selectors';
+import Loader from '../Loader/loader';
 
 let movie = {};
 let authStatus = null;
 
-const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromFavorites, authorizationStatus}) => {
+const Movie = ({
+  movies,
+  getComment,
+  comments,
+  addMovieToMyList,
+  removeMovieFromFavorites,
+  authorizationStatus,
+  isDataDownloaded}) => {
   authStatus = authorizationStatus;
   const history = useHistory();
   const [tabsState, setTabsState] = useState(MovieTabs.OVERVIEW);
@@ -78,12 +86,12 @@ const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromF
     }
   };
 
-  return (
+  return (isDataDownloaded ?
     <>
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
-            <img src={movie.background_image} alt={movie.name} />
+            <img src={movie.backgroundImage} alt={movie.name} />
           </div>
           <h1 className="visually-hidden">WTW</h1>
           <header className="page-header movie-card__head">
@@ -111,7 +119,7 @@ const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromF
                   <span>Play</span>
                 </button>
                 {
-                  !movie.is_favorite
+                  !movie.isFavorite
                     ? <button className="btn btn--list movie-card__button" type="button" onClick={addMovieToMyList}>
                       <svg viewBox="0 0 19 20" width={19} height={20}>
                         <use xlinkHref="#add" />
@@ -136,7 +144,7 @@ const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromF
         <div className="movie-card__wrap movie-card__translate-top">
           <div className="movie-card__info">
             <div className="movie-card__poster movie-card__poster--big">
-              <img src={movie.poster_image} alt={movie.name} width={218} height={327} />
+              <img src={movie.posterImage} alt={movie.name} width={218} height={327} />
             </div>
             <div className="movie-card__desc">
               <nav className="movie-nav movie-card__nav">
@@ -156,7 +164,7 @@ const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromF
                 <div className="movie-rating__score">{movie.rating}</div>
                 <p className="movie-rating__meta">
                   <span className="movie-rating__level">{ratingText}</span>
-                  <span className="movie-rating__count">{movie.scores_count} ratings</span>
+                  <span className="movie-rating__count">{movie.scoresCount} ratings</span>
                 </p>
               </div>
               <MovieInfo />
@@ -165,26 +173,28 @@ const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromF
         </div>
       </section>
       <MoreLikeThis movies={sameMovies} />
-    </>
+    </> : <Loader />
   );
 };
 
 Movie.propTypes = {
-  "movies": PropTypes.arrayOf(
+  movies: PropTypes.arrayOf(
       shapeOfMovie).isRequired,
-  "getComment": PropTypes.func,
-  "comments": PropTypes.arrayOf(
+  getComment: PropTypes.func,
+  comments: PropTypes.arrayOf(
       shapeOfComment
   ),
-  "addMovieToMyList": PropTypes.func,
-  "removeMovieFromFavorites": PropTypes.func,
-  "authorizationStatus": PropTypes.string
+  addMovieToMyList: PropTypes.func,
+  removeMovieFromFavorites: PropTypes.func,
+  authorizationStatus: PropTypes.string,
+  isDataDownloaded: PropTypes.bool
 };
 
 const mapStateToProps = (store) => ({
   comments: getComments(store),
   movies: getMovies(store),
-  authorizationStatus: getAuthorizationStatus(store)
+  authorizationStatus: getAuthorizationStatus(store),
+  isDataDownloaded: getIsDataDownloaded(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -14,7 +14,7 @@ const UserAvatar = ({user, authorizationStatus, logOut}) => {
         authorizationStatus === AuthorizationStatus.AUTH
           ? <div className="user-block__avatar">
             <Link to="/mylist">
-              <img src={user.avatar_url} alt="User avatar" width="63" height="63" />
+              <img src={user.avatarUrl} alt="User avatar" width="63" height="63" />
             </Link>
             <p style={{position: `absolute`, top: `3px`, right: `75px`, fontSize: `17px`}}>
               {user.email}
@@ -30,9 +30,9 @@ const UserAvatar = ({user, authorizationStatus, logOut}) => {
 };
 
 UserAvatar.propTypes = {
-  "user": shapeOfUser,
-  "authorizationStatus": PropTypes.string,
-  "logOut": PropTypes.func
+  user: shapeOfUser,
+  authorizationStatus: PropTypes.string,
+  logOut: PropTypes.func
 };
 
 const mapStateToProps = (store) => ({

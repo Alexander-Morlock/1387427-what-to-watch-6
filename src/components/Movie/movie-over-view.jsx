@@ -12,10 +12,10 @@ const MovieOverView = ({movie}) => {
 };
 
 MovieOverView.propTypes = {
-  "movie": PropTypes.shape({
-    "description": PropTypes.string.isRequired,
-    "director": PropTypes.string.isRequired,
-    "starring": PropTypes.arrayOf(PropTypes.string).isRequired
+  movie: PropTypes.shape({
+    description: PropTypes.string.isRequired,
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string).isRequired
   })
 };
 

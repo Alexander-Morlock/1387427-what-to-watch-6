@@ -5,23 +5,29 @@ import {shapeOfMovie} from '../../utils/shape-of-movie';
 import UserAvatar from '../UserAvatar/user-avatar';
 import {removeMovieFromFavoritesThunk, setFavoriteMovieThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
-import {getPromo} from '../../store/moviesReducer/selectors';
+import {getIsDataDownloaded, getPromo} from '../../store/moviesReducer/selectors';
 import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
 import {AuthorizationStatus} from '../../utils/constants';
+import Loader from '../Loader/loader';
 
 let promoMovieId = null;
 let authStatus = null;
 
-const MainPageHeader = ({promo, addMovieToMyList, removeMovieFromFavorites, authorizationStatus}) => {
+const MainPageHeader = ({
+  promo,
+  addMovieToMyList,
+  removeMovieFromFavorites,
+  authorizationStatus,
+  isDataDownloaded}) => {
   promoMovieId = promo.id;
   authStatus = authorizationStatus;
   const history = useHistory();
   const openPlayer = () => history.push(`/player/${promo.id}?from_main_page`);
 
-  return (
+  return (isDataDownloaded ?
     <section className="movie-card">
       <div className="movie-card__bg">
-        <img src={promo.background_image} alt={promo.name} />
+        <img src={promo.backgroundImage} alt={promo.name} />
       </div>
       <h1 className="visually-hidden">WTW</h1>
       <header className="page-header movie-card__head">
@@ -37,7 +43,7 @@ const MainPageHeader = ({promo, addMovieToMyList, removeMovieFromFavorites, auth
       <div className="movie-card__wrap">
         <div className="movie-card__info">
           <div className="movie-card__poster">
-            <img src={promo.poster_image} alt={`${promo.name} poster`} width="218" height="327" />
+            <img src={promo.posterImage} alt={`${promo.name} poster`} width="218" height="327" />
           </div>
           <div className="movie-card__desc">
             <h2 className="movie-card__title">{promo.name}</h2>
@@ -53,7 +59,7 @@ const MainPageHeader = ({promo, addMovieToMyList, removeMovieFromFavorites, auth
                 <span>Play</span>
               </button>
               {
-                !promo.is_favorite
+                !promo.isFavorite
                   ? <button className="btn btn--list movie-card__button" type="button" onClick={addMovieToMyList}>
                     <svg viewBox="0 0 19 20" width={19} height={20}>
                       <use xlinkHref="#add" />
@@ -71,20 +77,22 @@ const MainPageHeader = ({promo, addMovieToMyList, removeMovieFromFavorites, auth
           </div>
         </div>
       </div>
-    </section>
+    </section> : <Loader />
   );
 };
 
 MainPageHeader.propTypes = {
-  "promo": shapeOfMovie.isRequired,
-  "addMovieToMyList": PropTypes.func,
-  "removeMovieFromFavorites": PropTypes.func,
-  "authorizationStatus": PropTypes.string
+  promo: shapeOfMovie.isRequired,
+  addMovieToMyList: PropTypes.func,
+  removeMovieFromFavorites: PropTypes.func,
+  authorizationStatus: PropTypes.string,
+  isDataDownloaded: PropTypes.bool
 };
 
 const mapStateToProps = (store) => ({
   promo: getPromo(store),
-  authorizationStatus: getAuthorizationStatus(store)
+  authorizationStatus: getAuthorizationStatus(store),
+  isDataDownloaded: getIsDataDownloaded(store)
 });
 
 const mapDispatchToProps = (dispatch) => ({

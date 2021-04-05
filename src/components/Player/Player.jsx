@@ -22,7 +22,7 @@ const Player = ({movies}) => {
   let togglerPosition = 0;
 
   const getTimeLeft = () => {
-    const seconds = Math.floor(movie.run_time * 60 - currentTime);
+    const seconds = Math.floor(movie.runTime * 60 - currentTime);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(seconds / 3600);
 
@@ -62,7 +62,7 @@ const Player = ({movies}) => {
 
   return (
     <div className="player">
-      <video ref={videoRef} src={movie.video_link} className="player__video" poster="img/player-poster.jpg"/>
+      <video ref={videoRef} src={movie.videoLink} className="player__video" poster="img/player-poster.jpg"/>
       <button type="button" className="player__exit" onClick={closePlayer}>Exit</button>
       <div className="player__controls">
         <div className="player__controls-row">

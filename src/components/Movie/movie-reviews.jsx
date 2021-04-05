@@ -30,7 +30,7 @@ const MovieReviews = ({comments}) => {
 };
 
 MovieReviews.propTypes = {
-  "comments": PropTypes.arrayOf(
+  comments: PropTypes.arrayOf(
       shapeOfComment
   )
 };

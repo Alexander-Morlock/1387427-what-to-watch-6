@@ -19,7 +19,7 @@ const MainPage = ({isDataDownloaded}) => {
 };
 
 MainPage.propTypes = {
-  "isDataDownloaded": PropTypes.bool
+  isDataDownloaded: PropTypes.bool
 };
 
 const mapStateToProps = (store) => ({

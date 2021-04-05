@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const FilmDetails = ({movie}) => {
-  const movieDuration = `${Math.floor(movie.run_time / 60)}h ${movie.run_time % 60}m`;
+  const movieDuration = `${Math.floor(movie.runTime / 60)}h ${movie.runTime % 60}m`;
   return (
     <div className="movie-card__text movie-card__row">
       <div className="movie-card__text-col">
@@ -34,12 +34,12 @@ const FilmDetails = ({movie}) => {
 };
 
 FilmDetails.propTypes = {
-  "movie": PropTypes.shape({
-    "director": PropTypes.string.isRequired,
-    "starring": PropTypes.arrayOf(PropTypes.string).isRequired,
-    "run_time": PropTypes.number.isRequired,
-    "genre": PropTypes.string.isRequired,
-    "released": PropTypes.number.isRequired,
+  movie: PropTypes.shape({
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string).isRequired,
+    runTime: PropTypes.number.isRequired,
+    genre: PropTypes.string.isRequired,
+    released: PropTypes.number.isRequired,
   })
 };
 

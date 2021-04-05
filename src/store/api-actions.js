@@ -1,40 +1,10 @@
 import {createAPI} from '../api/api';
+import {adaptMovieFromServer, adaptMoviesFromServer, adaptUserResponseFromServer} from '../utils/adapter';
 import {ConnectionStatus} from "../utils/constants";
 import {logOut, requiredAuthorization, sendAuthorization} from './authorizationReducer/action';
 import {getFavoriteMovies, removeMovieFromFavorites, setFavoriteMovie} from './favoritesReducer/action';
 import {getAllMovies, getAllMoviesAndPromo, getComments, updateMovie} from './moviesReducer/action';
 import {blockCommentForm, setErrorCommentForm, unBlockCommentForm} from './reviewReducer/action';
-
-const adaptMovieFromServer = (m) => {
-  const movie = {
-    ...m,
-    posterImage: m.poster_image,
-    previewImage: m.preview_image,
-    backgroundImage: m.background_image,
-    backgroundColor: m.background_color,
-    scoresCount: m.scores_count,
-    runTime: m.run_time,
-    isFavorite: m.is_favorite,
-    videoLink: m.video_link,
-    previewVideoLink: m.preview_video_link
-  };
-
-  // [
-  //   `poster_image`,
-  //   `preview_image`,
-  //   `background_image`,
-  //   `background_color`,
-  //   `scores_count`,
-  //   `run_time`,
-  //   `is_favorite`,
-  //   `video_link`,
-  //   `preview_video_link`
-  // ].forEach((field) => delete movie[field]);
-
-  return movie;
-};
-
-const adaptMoviesFromServer = (movies) => movies.map((m) =>adaptMovieFromServer(m));
 
 const api = createAPI();
 
@@ -63,14 +33,14 @@ export const requiredAuthorizationThunk = () => (dispatch) => {
   api.get(`/login`)
     .then((res) => {
       if (res) {
-        dispatch(requiredAuthorization(res));
+        dispatch(requiredAuthorization(adaptUserResponseFromServer(res)));
       }
     });
 };
 
 export const sendAuthorizationThunk = (email, password) => (dispatch) => {
   api.post(`/login`, {email, password})
-    .then((res) => dispatch(sendAuthorization(res)));
+    .then((res) => dispatch(sendAuthorization(adaptUserResponseFromServer(res))));
 };
 
 export const logOutThunk = () => (dispatch) => {

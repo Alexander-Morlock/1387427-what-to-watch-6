@@ -34,15 +34,15 @@ const MovieCard = (props) => {
     {
       isHovered && timer.current
         ? <EmbededVideoPlayer
-          src={props.preview_video_link}
-          poster={props.poster_image}
+          src={props.previewVideoLink}
+          poster={props.posterImage}
           width="280" height="175" />
         : <>
           <div className="small-movie-card__image"
             style={{cursor: `pointer`}}
             onClick={() => history.push(`/films/${props.id}`)}>
             <img
-              src={props.preview_image}
+              src={props.previewImage}
               alt={props.name}
               width="280"
               height="175" />
@@ -74,13 +74,13 @@ const MovieCard = (props) => {
 };
 
 MovieCard.propTypes = {
-  "name": PropTypes.string,
-  "preview_image": PropTypes.string,
-  "id": PropTypes.number.isRequired,
-  "poster_image": PropTypes.string,
-  "preview_video_link": PropTypes.string,
-  "onMouseOver": PropTypes.func,
-  "removeMovieFromFavorites": PropTypes.func
+  name: PropTypes.string,
+  previewImage: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  posterImage: PropTypes.string,
+  previewVideoLink: PropTypes.string,
+  onMouseOver: PropTypes.func,
+  removeMovieFromFavorites: PropTypes.func
 };
 
 export default MovieCard;

@@ -28,14 +28,14 @@ const MoreLikeThis = ({movies}) => {
 };
 
 MoreLikeThis.propTypes = {
-  "movies": PropTypes.arrayOf(
+  movies: PropTypes.arrayOf(
       PropTypes.shape({
-        "name": PropTypes.string.isRequired,
-        "preview_image": PropTypes.string.isRequired,
-        "id": PropTypes.number.isRequired,
-        "onMouseOver": PropTypes.func,
-        "preview_video_link": PropTypes.string.isRequired,
-        "poster_image": PropTypes.string.isRequired
+        name: PropTypes.string.isRequired,
+        previewImage: PropTypes.string.isRequired.isRequired,
+        id: PropTypes.number.isRequired,
+        onMouseOver: PropTypes.func,
+        previewVideoLink: PropTypes.string.isRequired,
+        posterImage: PropTypes.string.isRequired
       })
   ).isRequired
 };

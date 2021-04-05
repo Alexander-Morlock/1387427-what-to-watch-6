@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import shapeOfMovie from '../../../utils/shape-of-movie';
-import MovieList from '../../MovieList/MovieList';
+import {shapeOfMovie} from '../../../utils/shape-of-movie';
+import MovieList from '../../MovieList/movie-list';
 import {connect} from 'react-redux';
 import {ALL_GENRES} from '../../../utils/constants';
 import {getGenres, getMovies} from '../../../store/moviesReducer/selectors';
 
 const MAX_COUNT_OF_GENRES = 9;
 
-const ShowMoviesByGenre = (props) => {
-  const [selectedGenre, setSelectedGenre] = useState(props.genres[0] || ALL_GENRES);
+const ShowMoviesByGenre = ({movies, genres}) => {
+  const [selectedGenre, setSelectedGenre] = useState(genres[0] || ALL_GENRES);
 
   return (
     <div className="page-content">
@@ -18,7 +18,7 @@ const ShowMoviesByGenre = (props) => {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
         <ul className="catalog__genres-list">
           {
-            props.genres.map((g, i) => i <= MAX_COUNT_OF_GENRES && <li key={`genre ${g}`}
+            genres.map((g, i) => i <= MAX_COUNT_OF_GENRES && <li key={`genre ${g}`}
               onClick={(evt) => setSelectedGenre(evt.target.innerText)}
               className={`catalog__genres-item ${selectedGenre === g && `catalog__genres-item--active`}`}>
               <Link to="#" className="catalog__genres-link">{g}</Link>
@@ -27,8 +27,8 @@ const ShowMoviesByGenre = (props) => {
         </ul>
 
         <MovieList movies={selectedGenre === ALL_GENRES
-          ? props.movies
-          : props.movies.filter((f) => f.genre.toLowerCase() === selectedGenre.toLowerCase())} />
+          ? movies
+          : movies.filter((f) => f.genre.toLowerCase() === selectedGenre.toLowerCase())} />
 
       </section>
       <footer className="page-footer">
@@ -49,7 +49,7 @@ const ShowMoviesByGenre = (props) => {
 
 ShowMoviesByGenre.propTypes = {
   movies: PropTypes.arrayOf(
-      shapeOfMovie()
+      shapeOfMovie
   ).isRequired,
   genres: PropTypes.arrayOf(
       PropTypes.string

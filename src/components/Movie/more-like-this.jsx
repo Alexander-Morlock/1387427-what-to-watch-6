@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import MovieList from '../MovieList/MovieList';
+import MovieList from '../MovieList/movie-list';
 
-const MoreLikeThis = (props) => {
+const MoreLikeThis = ({movies}) => {
   return (
     <div className="page-content">
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
-        <MovieList movies={props.movies}/>
+        <MovieList movies={movies}/>
       </section>
       <footer className="page-footer">
         <div className="logo">

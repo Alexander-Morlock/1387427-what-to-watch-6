@@ -1,16 +1,16 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import getShapeOfMoviePropType from '../../utils/shape-of-movie';
+import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
-import CommentForm from './CommentForm';
+import CommentForm from './/comment-form';
 import {connect} from 'react-redux';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import UserAvatar from '../UserAvatar/user-avatar';
 import {getMovies} from '../../store/moviesReducer/selectors';
 
-const AddReview = (props) => {
+const AddReview = ({movies}) => {
   const {id} = useParams();
-  const movie = props.movies.find((m) => m.id === parseInt(id, 10));
+  const movie = movies.find((m) => m.id === Number(id));
   return (
     <section className="movie-card movie-card--full">
       <div className="movie-card__header">
@@ -43,7 +43,7 @@ const AddReview = (props) => {
         </div>
       </div>
       <div className="add-review">
-        <CommentForm id={parseInt(id, 10)}/>
+        <CommentForm id={Number(id)}/>
       </div>
     </section>
 
@@ -52,7 +52,7 @@ const AddReview = (props) => {
 
 AddReview.propTypes = {
   movies: PropTypes.arrayOf(
-      getShapeOfMoviePropType()
+      shapeOfMovie
   ).isRequired
 };
 

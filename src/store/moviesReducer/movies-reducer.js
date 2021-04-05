@@ -42,6 +42,15 @@ const moviesReducer = (state = initialState, action) => {
       };
     }
 
+    case ActionType.UPDATE_MOVIE: {
+      const updateIndex = state.movies.findIndex((e) => e.id === action.payload.id);
+      return {
+        ...state,
+        movies: [...state.movies.slice(0, updateIndex), action.payload, ...state.movies.slice(updateIndex + 1)],
+        promo: action.payload.id === state.promo.id ? action.payload : state.promo
+      };
+    }
+
     default: {
       return state;
     }

@@ -6,11 +6,13 @@ import {useHistory} from 'react-router';
 import {getIsBlockedCommentForm, getIsErrorCommentForm} from '../../store/reviewReducer/selectors';
 const DEFAULT_RATING = 3;
 const MAX_RATING = 10;
-const MESSAGE_MIN_LENGTH = 50;
-const MESSAGE_MAX_LENGTH = 400;
+const MessageLength = {
+  MIN: 50,
+  MAX: 400
+};
 const ratingValues = new Array(MAX_RATING).fill(null).map((x, i) => i + 1);
 
-const Form = (props) => {
+const Form = ({postReview, isBlockedCommentForm, isErrorCommentForm, id}) => {
 
   const history = useHistory();
 
@@ -21,7 +23,7 @@ const Form = (props) => {
     rating: DEFAULT_RATING
   });
 
-  const onClickHandler = (evt) => setFormData({...formData, rating: parseInt(evt.target.value, 10)});
+  const onClickHandler = (evt) => setFormData({...formData, rating: Number(evt.target.value)});
 
   const onChangeTextarea = (evt) => {
     setFormData(
@@ -35,7 +37,7 @@ const Form = (props) => {
   const onSubmitHandler = (evt) => {
     evt.preventDefault();
 
-    if (formData.comment.length < MESSAGE_MIN_LENGTH || formData.comment.length > MESSAGE_MAX_LENGTH) {
+    if (formData.comment.length < MessageLength.MIN || formData.comment.length > MessageLength.MAX) {
       setFormData(
           {
             ...formData,
@@ -49,15 +51,15 @@ const Form = (props) => {
             isSubmitted: true
           }
       );
-      props.postReview(formData.rating, formData.comment, props.id);
+      postReview(formData.rating, formData.comment, id);
     }
   };
 
   useEffect(() => {
 
     if (formData.isInvalidTextarea
-        && formData.comment.length >= MESSAGE_MIN_LENGTH
-        && formData.comment.length <= MESSAGE_MAX_LENGTH) {
+        && formData.comment.length >= MessageLength.MIN
+        && formData.comment.length <= MessageLength.MAX) {
       setFormData(
           {
             ...formData,
@@ -68,10 +70,10 @@ const Form = (props) => {
   });
 
   useEffect(() => {
-    if (formData.isSubmitted && !props.isBlockedCommentForm && !props.isErrorCommentForm) {
-      history.push(`/films/${props.id}`);
+    if (formData.isSubmitted && !isBlockedCommentForm && !isErrorCommentForm) {
+      history.push(`/films/${id}`);
     }
-  }, [props.isBlockedCommentForm, props.isErrorCommentForm]);
+  }, [isBlockedCommentForm, isErrorCommentForm]);
 
   return (
     <form action="#" className="add-review__form" onSubmit={onSubmitHandler}>
@@ -79,11 +81,11 @@ const Form = (props) => {
         {
           formData.isInvalidTextarea &&
             <p style={{textAlign: `center`, color: `red`}}>
-              Message must be {MESSAGE_MIN_LENGTH} - {MESSAGE_MAX_LENGTH} symbols, not more not less
+              Message must be {MessageLength.MIN} - {MessageLength.MAX} symbols, not more not less
             </p>
         }
         {
-          props.isErrorCommentForm &&
+          isErrorCommentForm &&
             <p style={{textAlign: `center`, color: `red`}}>
               NETWORK ERROR
             </p>
@@ -93,7 +95,7 @@ const Form = (props) => {
             ratingValues.map((r) => <Fragment key={`rating-${r}`}>
               <input className="rating__input" id={`star-${r}`} type="radio" name="rating" value={r}
                 onChange={onClickHandler}
-                disabled={props.isBlockedCommentForm}
+                disabled={isBlockedCommentForm}
                 checked={formData.rating === r}/>
               <label className="rating__label" htmlFor={`star-${r}`}>Rating {r}</label>
             </Fragment>)
@@ -107,15 +109,15 @@ const Form = (props) => {
           placeholder="Review text"
           value={formData.comment}
           onChange = {onChangeTextarea}
-          disabled={props.isBlockedCommentForm}
+          disabled={isBlockedCommentForm}
           style={{outline: formData.isInvalidTextarea ? `3px solid red` : ``}}
-          maxLength={MESSAGE_MAX_LENGTH + 1}
+          maxLength={MessageLength.MAX + 1}
         />
         <div className="add-review__submit">
           <button
             className="add-review__btn"
             type="submit"
-            disabled={props.isBlockedCommentForm}>Post</button>
+            disabled={isBlockedCommentForm}>Post</button>
         </div>
       </div>
     </form>

@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux';
 import {NameSpace} from '../utils/constants';
-import authorizationReducer from './authorizationReducer/authorizationReducer';
-import favoritesReducer from './favoritesReducer/favoritesReducer';
-import moviesReducer from './moviesReducer/moviesReducer';
-import reviewReducer from './reviewReducer/reviewReducer';
+import authorizationReducer from './authorizationReducer/authorization-reducer';
+import favoritesReducer from './favoritesReducer/favorites-reducer';
+import moviesReducer from './moviesReducer/movies-reducer';
+import reviewReducer from './reviewReducer/review-reducer';
 
 export default combineReducers({
   [NameSpace.AUTHORIZATION]: authorizationReducer,

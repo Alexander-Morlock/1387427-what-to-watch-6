@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FilmDetails = (props) => {
-  const movieDuration = `${Math.floor(props.movie.run_time / 60)}h ${props.movie.run_time % 60}m`;
+const FilmDetails = ({movie}) => {
+  const movieDuration = `${Math.floor(movie.run_time / 60)}h ${movie.run_time % 60}m`;
   return (
     <div className="movie-card__text movie-card__row">
       <div className="movie-card__text-col">
         <p className="movie-card__details-item">
           <strong className="movie-card__details-name">Director</strong>
-          <span className="movie-card__details-value">{props.movie.director}</span>
+          <span className="movie-card__details-value">{movie.director}</span>
         </p>
         <p className="movie-card__details-item">
           <strong className="movie-card__details-name">Starring</strong>
-          <span className="movie-card__details-value" style={{whiteSpace: `pre-line`}}>{props.movie.starring.join(`, \n`)}</span>
+          <span className="movie-card__details-value" style={{whiteSpace: `pre-line`}}>{movie.starring.join(`, \n`)}</span>
         </p>
       </div>
       <div className="movie-card__text-col">
@@ -22,11 +22,11 @@ const FilmDetails = (props) => {
         </p>
         <p className="movie-card__details-item">
           <strong className="movie-card__details-name">Genre</strong>
-          <span className="movie-card__details-value">{props.movie.genre}</span>
+          <span className="movie-card__details-value">{movie.genre}</span>
         </p>
         <p className="movie-card__details-item">
           <strong className="movie-card__details-name">Released</strong>
-          <span className="movie-card__details-value">{props.movie.released}</span>
+          <span className="movie-card__details-value">{movie.released}</span>
         </p>
       </div>
     </div>

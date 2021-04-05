@@ -1,35 +1,35 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import getShapeOfMoviePropType from '../../utils/shape-of-movie';
+import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import MainPage from '../MainPage/MainPage';
-import SignIn from '../SignIn/SignIn';
-import MyList from '../MyList/MyList';
-import Movie from '../Movie/Movie';
-import AddReview from '../AddReview/AddReview';
-import Player from '../Player/Player';
-import Page404 from '../Page404/Page404';
+import MainPage from '../MainPage/main-page';
+import SignIn from '../SignIn/sign-in';
+import MyList from '../MyList/my-list';
+import Movie from '../Movie/movie';
+import AddReview from '../AddReview/add-review';
+import Player from '../Player/player';
+import Page404 from '../Page404/page-404';
 import {connect} from 'react-redux';
 import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
-import Loader from '../Loader/Loader';
-import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import Loader from '../Loader/loader';
+import PrivateRoute from '../PrivateRoute/private-route';
 import {getGenres, getIsDataDownloaded, getMovies, getPromo} from '../../store/moviesReducer/selectors';
 
-const App = (props) => {
+const App = ({movies, getAllMoviesAndPromo, requiredAuthorization, isDataDownloaded}) => {
 
   useEffect(() => {
-    props.requiredAuthorization();
-    props.getAllMoviesAndPromo();
+    requiredAuthorization();
+    getAllMoviesAndPromo();
   }, []);
 
   const loaderIcon = document.getElementById(`loader-icon`);
 
-  if (loaderIcon && props.movies[0]) {
+  if (loaderIcon && movies[0]) {
     loaderIcon.remove();
   }
 
   return (
-    props.isDataDownloaded
+    isDataDownloaded
       ? <BrowserRouter>
         <Switch>
           <Route path='/' exact>
@@ -61,9 +61,7 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  movies: PropTypes.arrayOf(getShapeOfMoviePropType()).isRequired,
-  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  promo: getShapeOfMoviePropType().isRequired,
+  movies: PropTypes.arrayOf(shapeOfMovie).isRequired,
   getAllMoviesAndPromo: PropTypes.func.isRequired,
   requiredAuthorization: PropTypes.func.isRequired,
   isDataDownloaded: PropTypes.bool

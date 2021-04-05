@@ -1,15 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import MoviesByGenre from './MoviesByGenre/MoviesByGenre';
-import Loader from '../Loader/Loader';
-import MainPageHeader from './MainPageHeader';
+import MoviesByGenre from './MoviesByGenre/movies-by-genre';
+import Loader from '../Loader/loader';
+import MainPageHeader from './main-page-header';
 import {getIsDataDownloaded} from '../../store/moviesReducer/selectors';
 
-const MainPage = (props) => {
+const MainPage = ({isDataDownloaded}) => {
 
   return (
-    props.isDataDownloaded ?
+    isDataDownloaded ?
       <div>
         <MainPageHeader />
         <MoviesByGenre />
@@ -19,7 +19,6 @@ const MainPage = (props) => {
 };
 
 MainPage.propTypes = {
-  "logOut": PropTypes.func,
   "isDataDownloaded": PropTypes.bool
 };
 

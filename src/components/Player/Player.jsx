@@ -1,16 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import getShapeOfMoviePropType from '../../utils/shape-of-movie';
+import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
 import {getMovies} from '../../store/moviesReducer/selectors';
 
-const Player = (props) => {
+const Player = ({movies}) => {
   const {id} = useParams();
   const location = useLocation();
 
-  const movie = props.movies.find((m) => m.id === +id);
+  const movie = movies.find((m) => m.id === +id);
 
   const history = useHistory();
   const closePlayer = () => location.search
@@ -99,7 +99,7 @@ const Player = (props) => {
 };
 
 Player.propTypes = PropTypes.arrayOf(
-    getShapeOfMoviePropType()
+    shapeOfMovie
 ).isRequired;
 
 

@@ -1,25 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import shapeOfMovie from '../../utils/shape-of-movie';
+import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
-import MovieOverView from './MovieOverView';
-import MovieDetails from './MovieDetails';
-import MovieReviews from './MovieReviews';
-import MoreLikeThis from './MoreLikeThis';
-import {getCommentsThunk, setFavoriteMovieThunk} from '../../store/api-actions';
+import MovieOverView from './movie-over-view';
+import MovieDetails from './movie-details';
+import MovieReviews from './movie-reviews';
+import MoreLikeThis from './more-like-this';
+import {getCommentsThunk, removeMovieFromFavoritesThunk, setFavoriteMovieThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
-import shapeOfComment from '../../utils/shape-of-comment';
+import {shapeOfComment} from '../../utils/shape-of-comment';
 import {AuthorizationStatus, MovieRating, MovieTabs} from '../../utils/constants';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import UserAvatar from '../UserAvatar/user-avatar';
 import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
 import {getComments, getMovies} from '../../store/moviesReducer/selectors';
 
 let movie = {};
-let authorizationStatus = null;
+let authStatus = null;
 
-const Movie = (props) => {
-  authorizationStatus = props.authorizationStatus;
+const Movie = ({movies, getComment, comments, addMovieToMyList, removeMovieFromFavorites, authorizationStatus}) => {
+  authStatus = authorizationStatus;
   const history = useHistory();
   const [tabsState, setTabsState] = useState(MovieTabs.OVERVIEW);
 
@@ -30,17 +30,17 @@ const Movie = (props) => {
   const handleClick = (evt) => setTabsState(evt.target.innerText);
 
   const {id} = useParams();
-  movie = props.movies.find((m) => m.id === parseInt(id, 10));
+  movie = movies.find((m) => m.id === Number(id));
   if (!movie) {
     history.push(`/404`);
     return null;
   }
-  const sameMovies = props.movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
+  const sameMovies = movies.filter((m) => m.genre === movie.genre && m.id !== movie.id);
 
   const openPlayer = () => history.push(`/player/${id}`);
 
   useEffect(() => {
-    props.getComment(movie.id);
+    getComment(movie.id);
     if (tabsState !== MovieTabs.OVERVIEW) {
       setTabsState(MovieTabs.OVERVIEW);
     }
@@ -70,7 +70,7 @@ const Movie = (props) => {
         return <MovieDetails movie={movie} />;
       }
       case MovieTabs.REVIEWS: {
-        return <MovieReviews comments={props.comments} />;
+        return <MovieReviews comments={comments} />;
       }
       default: {
         return <MovieOverView movie={movie} />;
@@ -110,14 +110,23 @@ const Movie = (props) => {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list movie-card__button" type="button" onClick={props.addMovieToMyList}>
-                  <svg viewBox="0 0 19 20" width={19} height={20}>
-                    <use xlinkHref="#add" />
-                  </svg>
-                  <span>My list</span>
-                </button>
                 {
-                  props.authorizationStatus === AuthorizationStatus.AUTH
+                  !movie.is_favorite
+                    ? <button className="btn btn--list movie-card__button" type="button" onClick={addMovieToMyList}>
+                      <svg viewBox="0 0 19 20" width={19} height={20}>
+                        <use xlinkHref="#add" />
+                      </svg>
+                      <span>My list</span>
+                    </button>
+                    : <button className="btn btn--list movie-card__button" type="button" onClick={removeMovieFromFavorites}>
+                      <svg viewBox="0 0 18 14" width="18" height="14">
+                        <use xlinkHref="#in-list"></use>
+                      </svg>
+                      <span>My list</span>
+                    </button>
+                }
+                {
+                  authorizationStatus === AuthorizationStatus.AUTH
                   && <Link to={`/films/${id}/review`} className="btn movie-card__button">Add review</Link>
                 }
               </div>
@@ -162,13 +171,13 @@ const Movie = (props) => {
 
 Movie.propTypes = {
   "movies": PropTypes.arrayOf(
-      shapeOfMovie()).isRequired,
+      shapeOfMovie).isRequired,
   "getComment": PropTypes.func,
-  "getSameMovies": PropTypes.func,
   "comments": PropTypes.arrayOf(
-      shapeOfComment()
+      shapeOfComment
   ),
   "addMovieToMyList": PropTypes.func,
+  "removeMovieFromFavorites": PropTypes.func,
   "authorizationStatus": PropTypes.string
 };
 
@@ -181,10 +190,11 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
   getComment: (id) => dispatch(getCommentsThunk(id)),
   addMovieToMyList: () => {
-    if (authorizationStatus === AuthorizationStatus.AUTH) {
+    if (authStatus === AuthorizationStatus.AUTH) {
       dispatch(setFavoriteMovieThunk(movie.id));
     }
-  }
+  },
+  removeMovieFromFavorites: () => dispatch(removeMovieFromFavoritesThunk(movie.id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

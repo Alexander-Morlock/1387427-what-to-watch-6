@@ -1,19 +1,19 @@
 import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import MovieList from '../MovieList/MovieList';
+import MovieList from '../MovieList/movie-list';
 import PropTypes from 'prop-types';
-import shapeOfMovie from '../../utils/shape-of-movie';
+import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import UserAvatar from '../UserAvatar/user-avatar';
 import {getFavoriteMoviesThunk, removeMovieFromFavoritesThunk} from '../../store/api-actions';
 import {getMyList} from '../../store/favoritesReducer/selectors';
 
 let isMyListDownloaded = false;
 
-const MyList = (props) => {
+const MyList = ({movies, getFavoriteMovies, removeMovieFromFavorites}) => {
 
   useEffect(() => {
-    props.getFavoriteMovies();
+    getFavoriteMovies();
     isMyListDownloaded = true;
   }, []);
 
@@ -33,7 +33,7 @@ const MyList = (props) => {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <MovieList movies={props.movies} removeMovieFromFavorites={props.removeMovieFromFavorites}/>
+        <MovieList movies={movies} removeMovieFromFavorites={removeMovieFromFavorites}/>
 
       </section>
       <footer className="page-footer">
@@ -54,7 +54,7 @@ const MyList = (props) => {
 
 MyList.propTypes = {
   "movies": PropTypes.arrayOf(
-      shapeOfMovie()
+      shapeOfMovie
   ).isRequired,
   "getFavoriteMovies": PropTypes.func,
   "removeMovieFromFavorites": PropTypes.func

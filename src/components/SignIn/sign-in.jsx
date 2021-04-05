@@ -6,15 +6,15 @@ import {sendAuthorizationThunk} from '../../store/api-actions';
 import {AuthorizationStatus} from '../../utils/constants';
 import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
 
-const SignIn = (props) => {
+const SignIn = ({authorizationStatus, sendAuthorization}) => {
   const [validationError, setValidationError] = useState(null);
 
   const history = useHistory();
   useEffect(() => {
-    if (props.authorizationStatus === AuthorizationStatus.AUTH) {
+    if (authorizationStatus === AuthorizationStatus.AUTH) {
       history.push(`/`);
     }
-  }, [props.authorizationStatus]);
+  }, [authorizationStatus]);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -23,12 +23,12 @@ const SignIn = (props) => {
     const email = emailRef.current;
     const password = passwordRef.current;
     evt.preventDefault();
-    if (!email.value || !(/^[0-9a-z@.]*$/i.test(email.value))) {
+    if (!email.value || !(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/i.test(email.value))) {
       setValidationError(`email`);
-    } else if (!password.value) {
+    } else if (!password.value || password.value.split(``).some((x) => x === ` `)) {
       setValidationError(`password`);
     } else {
-      props.sendAuthorization(emailRef.current.value, passwordRef.current.value);
+      sendAuthorization(emailRef.current.value, passwordRef.current.value);
     }
   };
 
@@ -50,7 +50,7 @@ const SignIn = (props) => {
             <p>Please enter a valid email address</p>
           </div>}
           {validationError === `password` && <div className="sign-in__message">
-            <p>Please enter a password</p>
+            <p>Please enter a valid password</p>
           </div>}
           <div className="sign-in__fields">
             <div className="sign-in__field">

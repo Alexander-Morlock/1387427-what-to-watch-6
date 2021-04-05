@@ -1,11 +1,11 @@
 import React from 'react';
-import Review from './Review';
+import Review from './review';
 import PropTypes from 'prop-types';
-import shapeOfComment from '../../utils/shape-of-comment';
+import {shapeOfComment} from '../../utils/shape-of-comment';
 
-const MovieReviews = (props) => {
-  const leftComments = props.comments.slice(0, Math.round(props.comments.length / 2));
-  const rightComments = props.comments.slice(leftComments.length);
+const MovieReviews = ({comments}) => {
+  const leftComments = comments.slice(0, Math.round(comments.length / 2));
+  const rightComments = comments.slice(leftComments.length);
   const LeftColumn = () => {
     return (
       <div className="movie-card__reviews-col">
@@ -31,7 +31,7 @@ const MovieReviews = (props) => {
 
 MovieReviews.propTypes = {
   "comments": PropTypes.arrayOf(
-      shapeOfComment()
+      shapeOfComment
   )
 };
 

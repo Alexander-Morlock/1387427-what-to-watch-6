@@ -62,14 +62,14 @@ export const postReviewThunk = (rating, comment, id) => (dispatch) => {
 
 export const getFavoriteMoviesThunk = () => (dispatch) => {
   api.get(`/favorite`)
-    .then((res) => dispatch(getFavoriteMovies(res)));
+    .then((res) => dispatch(getFavoriteMovies({status: res.status, data: adaptMoviesFromServer(res.data)})));
 };
 
 export const setFavoriteMovieThunk = (id) => (dispatch) => {
   api.post(`/favorite/${id}/1`)
     .then((res) => {
-      dispatch(setFavoriteMovie(res));
-      dispatch(updateMovie(res.data));
+      dispatch(setFavoriteMovie({status: res.status, data: adaptMovieFromServer(res.data)}));
+      dispatch(updateMovie(adaptMovieFromServer(res.data)));
     });
 };
 
@@ -77,7 +77,7 @@ export const removeMovieFromFavoritesThunk = (id) => (dispatch) => {
   api.post(`/favorite/${id}/0`)
     .then((res) => {
       dispatch(removeMovieFromFavorites(res));
-      dispatch(updateMovie(res.data));
+      dispatch(updateMovie(adaptMovieFromServer(res.data)));
     });
 };
 

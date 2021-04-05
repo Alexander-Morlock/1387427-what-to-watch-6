@@ -24,5 +24,6 @@ export const adaptMovieFromServer = ({
 
 export const adaptMoviesFromServer = (movies) => movies.map((m) =>adaptMovieFromServer(m));
 
-const adaptUserFromServer = ({avatar_url: avatarUrl, ...rest}) => ({...rest, avatarUrl});
-export const adaptUserResponseFromServer = ({data, ...rest}) => ({data: adaptUserFromServer(data), ...rest});
+const adaptUserFromServer = ({avatar_url: avatarUrl = ``, ...rest}) => ({...rest, avatarUrl});
+
+export const adaptUserResponseFromServer = ({data = {}, ...rest}) => ({...rest, data: adaptUserFromServer(data)});

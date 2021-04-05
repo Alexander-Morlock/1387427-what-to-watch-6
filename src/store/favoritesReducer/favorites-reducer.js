@@ -1,4 +1,3 @@
-import {adaptMovieFromServer, adaptMoviesFromServer} from '../../utils/adapter';
 import {ConnectionStatus} from '../../utils/constants';
 import {ActionType} from "./action";
 
@@ -13,7 +12,7 @@ const favoritesReducer = (state = initialState, action) => {
       return {
         ...state,
         myList: action.payload.status === ConnectionStatus.SUCCESS
-          ? adaptMoviesFromServer(action.payload.data)
+          ? action.payload.data
           : []
       };
     }
@@ -25,7 +24,7 @@ const favoritesReducer = (state = initialState, action) => {
         : -1;
 
       if (index === -1) {
-        newList.push(adaptMovieFromServer(action.payload.data));
+        newList.push(action.payload.data);
       }
       return {
         ...state,

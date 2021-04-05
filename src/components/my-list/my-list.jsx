@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import MovieList from '../MovieList/movie-list';
+import MovieList from '../movie-list/movie-list';
 import PropTypes from 'prop-types';
 import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';

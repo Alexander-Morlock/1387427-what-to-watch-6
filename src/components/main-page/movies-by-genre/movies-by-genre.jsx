@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {shapeOfMovie} from '../../../utils/shape-of-movie';
-import MovieList from '../../MovieList/movie-list';
+import MovieList from '../../movie-list/movie-list';
 import {connect} from 'react-redux';
 import {ALL_GENRES} from '../../../utils/constants';
 import {getGenres, getMovies} from '../../../store/movies-reducer/selectors';

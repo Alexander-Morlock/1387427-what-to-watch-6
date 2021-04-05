@@ -28,7 +28,6 @@ const MovieCard = (props) => {
 
   return <article
     className="small-movie-card catalog__movies-card"
-    style={{position: `relative`}}
     onMouseEnter={onMouseEnterHandler}
     onMouseLeave={onMouseLeaveHandler}>
     {
@@ -51,24 +50,6 @@ const MovieCard = (props) => {
             <Link className="small-movie-card__link" to={`/films/${props.id}`}>{props.name}</Link>
           </h3>
         </>
-    }
-    {
-      props.removeMovieFromFavorites
-        && <button
-          style={{fontSize: `7px`,
-            position: `absolute`,
-            top: `4px`,
-            right: `4px`,
-            zIndex: `1`,
-            backgroundColor: `rgba(0, 0, 0, 0.5)`,
-            border: `none`,
-            borderRadius: `50%`,
-            width: `15px`,
-            height: `15px`,
-            color: `#fff`,
-            padding: `0`
-          }}
-          onClick={() => props.removeMovieFromFavorites(props.id)}>X</button>
     }
   </article>;
 };

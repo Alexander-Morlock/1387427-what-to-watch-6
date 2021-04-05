@@ -4,7 +4,7 @@ import {Link, useHistory} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {sendAuthorizationThunk} from '../../store/api-actions';
 import {AuthorizationStatus} from '../../utils/constants';
-import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
+import {getAuthorizationStatus} from '../../store/authorization-reducer/selectors';
 
 const SignIn = ({authorizationStatus, sendAuthorization}) => {
   const [validationError, setValidationError] = useState(null);

@@ -4,9 +4,9 @@ import MovieList from '../MovieList/movie-list';
 import PropTypes from 'prop-types';
 import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
-import UserAvatar from '../UserAvatar/user-avatar';
+import UserAvatar from '../user-avatar/user-avatar';
 import {getFavoriteMoviesThunk, removeMovieFromFavoritesThunk} from '../../store/api-actions';
-import {getMyList} from '../../store/favoritesReducer/selectors';
+import {getMyList} from '../../store/favorites-reducer/selectors';
 
 let isMyListDownloaded = false;
 

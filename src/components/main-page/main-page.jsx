@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import MoviesByGenre from './MoviesByGenre/movies-by-genre';
-import Loader from '../Loader/loader';
+import MoviesByGenre from './movies-by-genre/movies-by-genre';
+import Loader from '../loader/loader';
 import MainPageHeader from './main-page-header';
-import {getIsDataDownloaded} from '../../store/moviesReducer/selectors';
+import {getIsDataDownloaded} from '../../store/movies-reducer/selectors';
 
 const MainPage = ({isDataDownloaded}) => {
 

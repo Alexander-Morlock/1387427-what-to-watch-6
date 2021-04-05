@@ -2,18 +2,18 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import MainPage from '../MainPage/main-page';
-import SignIn from '../SignIn/sign-in';
-import MyList from '../MyList/my-list';
-import Movie from '../Movie/movie';
-import AddReview from '../AddReview/add-review';
-import Player from '../Player/player';
-import Page404 from '../Page404/page-404';
+import MainPage from '../main-page/main-page';
+import SignIn from '../sign-in/sign-in';
+import MyList from '../my-list/my-list';
+import Movie from '../movie/movie';
+import AddReview from '../add-review/add-review';
+import Player from '../player/player';
+import Page404 from '../page-404/page-404';
 import {connect} from 'react-redux';
 import {getAllMoviesAndPromoThunk, requiredAuthorizationThunk} from '../../store/api-actions';
-import Loader from '../Loader/loader';
-import PrivateRoute from '../PrivateRoute/private-route';
-import {getGenres, getIsDataDownloaded, getMovies, getPromo} from '../../store/moviesReducer/selectors';
+import Loader from '../loader/loader';
+import PrivateRoute from '../private-route/private-route';
+import {getGenres, getIsDataDownloaded, getMovies, getPromo} from '../../store/movies-reducer/selectors';
 
 const App = ({movies, getAllMoviesAndPromo, requiredAuthorization, isDataDownloaded}) => {
 

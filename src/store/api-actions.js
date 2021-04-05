@@ -1,10 +1,10 @@
 import {createAPI} from '../api/api';
 import {adaptMovieFromServer, adaptMoviesFromServer, adaptUserResponseFromServer} from '../utils/adapter';
 import {ConnectionStatus} from "../utils/constants";
-import {logOut, requiredAuthorization, sendAuthorization} from './authorizationReducer/action';
-import {getFavoriteMovies, removeMovieFromFavorites, setFavoriteMovie} from './favoritesReducer/action';
-import {getAllMovies, getAllMoviesAndPromo, getComments, updateMovie} from './moviesReducer/action';
-import {blockCommentForm, setErrorCommentForm, unBlockCommentForm} from './reviewReducer/action';
+import {logOut, requiredAuthorization, sendAuthorization} from './authorization-reducer/action';
+import {getFavoriteMovies, removeMovieFromFavorites, setFavoriteMovie} from './favorites-reducer/action';
+import {getAllMovies, getAllMoviesAndPromo, getComments, updateMovie} from './movies-reducer/action';
+import {blockCommentForm, setErrorCommentForm, unBlockCommentForm} from './review-reducer/action';
 
 const api = createAPI();
 

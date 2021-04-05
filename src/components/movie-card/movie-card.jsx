@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Link, useHistory} from 'react-router-dom';
-import EmbededVideoPlayer from '../EmbededVideoPlayer/embeded-video-player';
+import EmbededVideoPlayer from '../embeded-video-player/embeded-video-player';
 const TIMEOUT = 1000;
 
 const MovieCard = (props) => {

@@ -1,6 +1,6 @@
 import React, {useState, memo} from 'react';
 import PropTypes from 'prop-types';
-import MovieCard from '../MovieCard/movie-card';
+import MovieCard from '../movie-card/movie-card';
 import ShowMoreButton from './show-more-button';
 
 const INCREASE_STEP = 8;

@@ -11,10 +11,10 @@ import {getCommentsThunk, removeMovieFromFavoritesThunk, setFavoriteMovieThunk} 
 import {connect} from 'react-redux';
 import {shapeOfComment} from '../../utils/shape-of-comment';
 import {AuthorizationStatus, MovieRating, MovieTabs} from '../../utils/constants';
-import UserAvatar from '../UserAvatar/user-avatar';
-import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
-import {getComments, getIsDataDownloaded, getMovies} from '../../store/moviesReducer/selectors';
-import Loader from '../Loader/loader';
+import UserAvatar from '../user-avatar/user-avatar';
+import {getAuthorizationStatus} from '../../store/authorization-reducer/selectors';
+import {getComments, getIsDataDownloaded, getMovies} from '../../store/movies-reducer/selectors';
+import Loader from '../loader/loader';
 
 let movie = {};
 let authStatus = null;

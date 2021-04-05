@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
 import {shapeOfMovie} from '../../utils/shape-of-movie';
-import UserAvatar from '../UserAvatar/user-avatar';
+import UserAvatar from '../user-avatar/user-avatar';
 import {removeMovieFromFavoritesThunk, setFavoriteMovieThunk} from '../../store/api-actions';
 import {connect} from 'react-redux';
-import {getIsDataDownloaded, getPromo} from '../../store/moviesReducer/selectors';
-import {getAuthorizationStatus} from '../../store/authorizationReducer/selectors';
+import {getIsDataDownloaded, getPromo} from '../../store/movies-reducer/selectors';
+import {getAuthorizationStatus} from '../../store/authorization-reducer/selectors';
 import {AuthorizationStatus} from '../../utils/constants';
-import Loader from '../Loader/loader';
+import Loader from '../loader/loader';
 
 let promoMovieId = null;
 let authStatus = null;

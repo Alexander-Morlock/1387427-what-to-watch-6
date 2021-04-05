@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {postReviewThunk} from '../../store/api-actions';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
-import {getIsBlockedCommentForm, getIsErrorCommentForm} from '../../store/reviewReducer/selectors';
+import {getIsBlockedCommentForm, getIsErrorCommentForm} from '../../store/review-reducer/selectors';
 const DEFAULT_RATING = 3;
 const MAX_RATING = 10;
 const MessageLength = {

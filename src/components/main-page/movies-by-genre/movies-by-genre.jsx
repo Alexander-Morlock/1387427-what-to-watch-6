@@ -5,7 +5,7 @@ import {shapeOfMovie} from '../../../utils/shape-of-movie';
 import MovieList from '../../MovieList/movie-list';
 import {connect} from 'react-redux';
 import {ALL_GENRES} from '../../../utils/constants';
-import {getGenres, getMovies} from '../../../store/moviesReducer/selectors';
+import {getGenres, getMovies} from '../../../store/movies-reducer/selectors';
 
 const MAX_COUNT_OF_GENRES = 9;
 

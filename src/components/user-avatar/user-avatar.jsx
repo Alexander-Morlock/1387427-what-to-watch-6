@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {shapeOfUser} from '../../utils/shape-of-user';
 import {AuthorizationStatus} from '../../utils/constants';
-import {getAuthorizationStatus, getUser} from '../../store/authorizationReducer/selectors';
+import {getAuthorizationStatus, getUser} from '../../store/authorization-reducer/selectors';
 import {logOutThunk} from '../../store/api-actions';
 
 const UserAvatar = ({user, authorizationStatus, logOut}) => {

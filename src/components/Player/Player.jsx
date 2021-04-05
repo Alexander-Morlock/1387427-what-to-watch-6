@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {connect} from 'react-redux';
 import {getAllMoviesThunk} from '../../store/api-actions';
-import {getMovies} from '../../store/moviesReducer/selectors';
+import {getMovies} from '../../store/movies-reducer/selectors';
 
 const Player = ({movies}) => {
   const {id} = useParams();

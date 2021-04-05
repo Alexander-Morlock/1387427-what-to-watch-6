@@ -3,10 +3,10 @@ import {useParams} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {shapeOfMovie} from '../../utils/shape-of-movie';
 import {Link} from 'react-router-dom';
-import CommentForm from './/comment-form';
+import CommentForm from './comment-form';
 import {connect} from 'react-redux';
-import UserAvatar from '../UserAvatar/user-avatar';
-import {getMovies} from '../../store/moviesReducer/selectors';
+import UserAvatar from '../user-avatar/user-avatar';
+import {getMovies} from '../../store/movies-reducer/selectors';
 
 const AddReview = ({movies}) => {
   const {id} = useParams();

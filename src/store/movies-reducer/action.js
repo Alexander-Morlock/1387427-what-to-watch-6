@@ -2,7 +2,8 @@ export const ActionType = {
   GET_ALL_MOVIES: `GET_ALL_MOVIES`,
   GET_COMMENTS: `GET_COMMENTS`,
   GET_ALL_MOVIES_AND_PROMO: `GET_ALL_MOVIES_AND_PROMO`,
-  UPDATE_MOVIE: `UPDATE_MOVIE`
+  UPDATE_MOVIE: `UPDATE_MOVIE`,
+  RESET_ALL_MOVIES_FAVORITE: `RESET_ALL_MOVIES_FAVORITE`
 };
 
 export const getAllMovies = (movies) => ({
@@ -22,3 +23,6 @@ export const updateMovie = (data) => ({
   payload: data
 });
 
+export const resetAllMoviesFavorite = () => ({
+  type: ActionType.RESET_ALL_MOVIES_FAVORITE
+});

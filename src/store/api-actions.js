@@ -3,7 +3,7 @@ import {adaptMovieFromServer, adaptMoviesFromServer, adaptUserResponseFromServer
 import {ConnectionStatus} from "../utils/constants";
 import {logOut, requiredAuthorization, sendAuthorization} from './authorization-reducer/action';
 import {getFavoriteMovies, removeMovieFromFavorites, setFavoriteMovie} from './favorites-reducer/action';
-import {getAllMovies, getAllMoviesAndPromo, getComments, updateMovie} from './movies-reducer/action';
+import {getAllMovies, getAllMoviesAndPromo, getComments, resetAllMoviesFavorite, updateMovie} from './movies-reducer/action';
 import {blockCommentForm, setErrorCommentForm, unBlockCommentForm} from './review-reducer/action';
 
 const api = createAPI();
@@ -45,7 +45,10 @@ export const sendAuthorizationThunk = (email, password) => (dispatch) => {
 
 export const logOutThunk = () => (dispatch) => {
   api.get(`/logout`)
-    .then((res) => dispatch(logOut(res.data)));
+    .then((res) => {
+      dispatch(logOut(res.data));
+      dispatch(resetAllMoviesFavorite());
+    });
 };
 
 export const postReviewThunk = (rating, comment, id) => (dispatch) => {

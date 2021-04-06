@@ -51,6 +51,14 @@ const moviesReducer = (state = initialState, action) => {
       };
     }
 
+    case ActionType.RESET_ALL_MOVIES_FAVORITE: {
+      return {
+        ...state,
+        movies: state.movies.map((m) => ({...m, isFavorite: false})),
+        promo: {...state.promo, isFavorite: false}
+      };
+    }
+
     default: {
       return state;
     }
